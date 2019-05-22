@@ -1,0 +1,39 @@
+@import "../variables.less";
+
+.last-meeting-track {
+
+  .mat-list-item {
+
+    margin: 10px 0;
+    
+    &--done {
+      color: @successFontColor;
+      background-color: @success;
+      border-color: @successBorder;
+    }
+
+    &--pending {
+      color: #721c24;
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+
+    .mat-list-item-content {
+      align-items: center;
+    }
+  }
+
+  &__left-side {
+    width: 90%;
+    padding: 10px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__right-side {
+    width: 10%;
+    padding: 10px;
+  }
+}

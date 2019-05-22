@@ -1,0 +1,22 @@
+<div class="topic">
+    <div class="mat-list-item">
+      <div class="mat-list-item-content flex between">
+        <div 
+          class="topic__left-side"
+          [ngClass]="isDone(topic.tasks) ? 'mat-list-item--done' : 'mat-list-item--pending'"
+          (click)="toggle()">
+            <div [ngClass]="{'topic__topic-text': showTasks}">
+                {{topic.topic}}
+            </div>
+            <div *ngIf="showTasks">
+              <div *ngFor="let task of topic.tasks">
+                <em-task [task]="task"></em-task>
+              </div>
+            </div>
+        </div>
+        <div class="topic__right-side flex center">
+          <mat-checkbox *ngIf="topic.tasks.length" [checked]="isDone(topic.tasks)" [disabled]="true"></mat-checkbox>
+        </div>
+      </div>
+    </div>
+</div>
