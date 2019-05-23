@@ -13,6 +13,12 @@ import { MeetingItemComponent } from './meeting-item/meeting-item.component';
 import { LastMeetingTrackComponent } from './last-meeting-track/last-meeting-track.component';
 import { TopicComponent } from './topic/topic.component';
 import { TaskComponent } from './task/task.component';
+import { isLogged } from './guards/login-guard';
+import { HomeComponent } from './home/home.component';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -21,10 +27,13 @@ import { TaskComponent } from './task/task.component';
     MeetingItemComponent,
     LastMeetingTrackComponent,
     TopicComponent,
-    TaskComponent
+    TaskComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
@@ -32,9 +41,11 @@ import { TaskComponent } from './task/task.component';
     HttpClientModule
   ],
   providers: [
+    isLogged,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
-    }
+    },
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   entryComponents: [MeetingComponent],
   bootstrap: [AppComponent]
