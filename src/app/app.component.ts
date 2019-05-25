@@ -1,25 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { MeetingComponent } from './meeting/meeting.component';
-import { HttpClient } from '@angular/common/http';
-import { meetings } from './meeting/meeting.mock';
+import { Component } from '@angular/core';
+import { LoginService } from './login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent implements OnInit {
-  constructor(private dialog: MatDialog, private http: HttpClient) {}
-  title = 'easy-meetings';
-  meetings: any;
-  ngOnInit() {
-    this.meetings = meetings;
-  }
 
-  createMeeting() {
-    this.dialog.open(MeetingComponent, {
-      width: '600px'
-    });
+export class AppComponent {
+
+  get showToolbar() {
+    return this.router.url !== '/';
+  }
+  constructor(
+    private loginService: LoginService,
+    private router: Router) {}
+
+  logout() {
+    this.loginService.logout();
+    this.router.navigate(['/']);
   }
 }

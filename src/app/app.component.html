@@ -1,29 +1,12 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>Easy Meetings</span>
-    <!-- <span class="example-spacer"></span>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
-    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon> -->
-  </mat-toolbar-row>
+<mat-toolbar *ngIf="showToolbar" color="primary">
+    <mat-toolbar-row>
+      <span>Easy Meetings</span>
+      <span class="fill"></span>
+      <span (click)="logout()">Salir</span>
+      <!-- <span class="example-spacer"></span>
+      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+      <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon> -->
+    </mat-toolbar-row>
 </mat-toolbar>
-
-
-<div style="width: 800px; margin: 0 auto">
-  <section>
-      <h2>Seguimiento de la reunión anterior</h2>
-      <ul class="captions">
-        <li><div class="success-icon"></div>Lo que se hizo</li>
-        <li><div class="fail-icon"></div>Lo que no se hizo</li>
-      </ul>
-      <em-last-meeting-track [meetings]="meetings"></em-last-meeting-track>
-  </section>
-  <section>
-    <h2>Proximas reuniónes</h2>
-  </section>
-  <button mat-raised-button color="primary"  (click)="createMeeting()">Nueva reunión</button>
-</div>
-
-
-
 
 <router-outlet></router-outlet>

@@ -12,6 +12,7 @@ section {
 
 //  FLEX BEHAVIOUR
 .flex {
+
   display: flex;
 
   &.around {
@@ -26,8 +27,15 @@ section {
     justify-content: center;
   }
 
+  &.end {
+    justify-content: end;
+  }
+
   &.wrap {
     flex-wrap: wrap;
   }
 
+  .fill {
+    flex: 1 1 auto;
+  }
 }
