@@ -14,7 +14,7 @@ import { LastMeetingTrackComponent } from './last-meeting-track/last-meeting-tra
 import { TopicComponent } from './topic/topic.component';
 import { TaskComponent } from './task/task.component';
 import { isLogged } from './guards/login-guard';
-import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
@@ -28,7 +28,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     LastMeetingTrackComponent,
     TopicComponent,
     TaskComponent,
-    HomeComponent
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

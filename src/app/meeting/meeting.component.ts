@@ -25,7 +25,7 @@ export class MeetingComponent implements OnInit {
   }
 
   haveTopic() {
-       return (<FormArray>this.meetingForm.get('topics')).controls[0].value != ''
+       return (<FormArray>this.meetingForm.get('topics')).controls[0].value != '';
   }
 
   onSubmit() {

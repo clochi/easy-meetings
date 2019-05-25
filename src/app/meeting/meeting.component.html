@@ -35,7 +35,7 @@
       <div formArrayName="topics">
         <mat-form-field 
           class="meeting__input"
-           *ngFor="let topic of meetingForm.get('topics').controls; let i = index">
+           *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
             <input
               matInput
               placeholder="Tema a tratar"

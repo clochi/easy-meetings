@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +16,16 @@ export class LoginService {
       .catch(err => alert('No se pudo logear ' + err));
   }
 
-  isLogged() : Observable<any>{
-    return Observable.create( observer => {
+  isLogged(): Observable<boolean>{
+    return new Observable(observer => {
       this.authFire.auth.onAuthStateChanged( user => {
-        observer.next(user ? true : false);
-        observer.complete();
-      })
+        user ? observer.next(true) : observer.next(false);
+      });
     })
+  };
+
+  logout() {
+    this.authFire.auth.signOut();
   }
+
 }

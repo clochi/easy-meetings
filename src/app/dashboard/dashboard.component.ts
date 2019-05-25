@@ -5,11 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { meetings } from '../meeting/meeting.mock';
 
 @Component({
-  selector: 'em-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less']
+  selector: 'em-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.less']
 })
-export class HomeComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   constructor(private dialog: MatDialog, private http: HttpClient) {}
   title = 'easy-meetings';
   meetings: any;

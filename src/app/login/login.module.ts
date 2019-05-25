@@ -9,6 +9,7 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { LoginService } from './login.service';
+import { RedirectLoggedDashboard } from '../guards/redirect-logged-dashboard';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -20,6 +21,6 @@ import { LoginService } from './login.service';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule
   ],
-  providers: [LoginService]
+  providers: [LoginService, RedirectLoggedDashboard]
 })
 export class LoginModule { }

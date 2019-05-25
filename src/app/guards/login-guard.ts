@@ -8,19 +8,11 @@ export class isLogged implements CanActivate {
   path: import("@angular/router").ActivatedRouteSnapshot[];
   route: import("@angular/router").ActivatedRouteSnapshot;
 
-
   constructor(
     private loginService: LoginService,
     private router: Router) {}
   
   canActivate() {
-    // this.loginService.isLogged()
-    //   .subscribe(response => {
-    //     if(!response) this.router.navigate(['/']);
-    //   })
-    return this.loginService.isLogged()
-    .subscribe(response => {
-      if(!response) this.router.navigate(['/']);
-    })
+    return this.loginService.isLogged();
   }
 }
