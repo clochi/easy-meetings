@@ -3,49 +3,58 @@
       <h2 mat-dialog-title>Nueva Reunión</h2>
   </div>
   <div>
-    <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()" novalidate>
-      <div class="flex between">
-          <mat-form-field class="meeting__input-50">
+    <mat-dialog-content>
+      <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="flex between">
+              <mat-form-field class="meeting__input-50">
+                <input
+                  matInput
+                  [matDatepicker]="picker" 
+                  placeholder="Fecha de reunión"
+                  formControlName="date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <mat-form-field class="meeting__input-50">
+                <input formControlName="time" placeholder="Hora" matInput type="time">
+              </mat-form-field>
+          </div>
+          <mat-form-field 
+          class="meeting__input">
             <input
               matInput
-              [matDatepicker]="picker" 
-              placeholder="Fecha de reunión"
-              formControlName="date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+              placeholder="Lugar"
+              formControlName="place">
           </mat-form-field>
-          <mat-form-field class="meeting__input-50">
-            <input formControlName="time" placeholder="Hora" matInput type="time">
-          </mat-form-field>
-      </div>
-      <mat-form-field 
-      class="meeting__input">
-        <input
-          matInput
-          placeholder="Lugar"
-          formControlName="place">
-      </mat-form-field>
-      <mat-form-field 
-      class="meeting__input">
-        <input
-          matInput
-          placeholder="Asistentes"
-          formControlName="users">
-      </mat-form-field>
-      <div formArrayName="topics">
-        <mat-form-field 
-          class="meeting__input"
-           *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
+          <mat-form-field 
+          class="meeting__input">
             <input
               matInput
-              placeholder="Tema a tratar"
-              [formControlName]="i">
+              placeholder="Asistentes"
+              formControlName="users">
           </mat-form-field>
-      </div>
-      <mat-dialog-actions class="flex around">
-        <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
-        <button mat-raised-button color="primary" [disabled]="!meetingForm.valid || !haveTopic()">Crear reunión</button>
-      </mat-dialog-actions>
-    </form>
+          <div formArrayName="topics">
+            <mat-form-field 
+              class="meeting__input-container"
+                *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
+                <input
+                  class="meeting__input"
+                  matInput
+                  placeholder="Tema a tratar"
+                  [formControlName]="i"
+                  (keydown)="enterPressed($event)">
+                <mat-icon 
+                  (click)="removeTopic(i)"
+                  class="meeting__remove"
+                  aria-label="Remove button"
+                  *ngIf="meetingForm.get('topics')['controls'][i].value != ''">delete</mat-icon>
+              </mat-form-field>
+          </div>
+          <mat-dialog-actions class="flex around">
+            <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
+            <button mat-raised-button color="primary" [disabled]="!meetingForm.valid || !haveTopic()">Crear reunión</button>
+          </mat-dialog-actions>
+        </form>
+    </mat-dialog-content>
   </div>
 </div>
