@@ -29,12 +29,12 @@ export class MeetingComponent implements OnInit {
     this.topicsControl.push(new FormControl(''));
   }
 
-  enterPressed(e: KeyboardEvent) {
-    if(e.keyCode == 13 || e.which == 13) { 
-      this.addTopic();
-      (<any>e.currentTarget).disabled = true;
-      //this.topicsControl.controls[this.topicsControl.controls.length -1];
-    };
+  enterPressed(e: KeyboardEvent, i) {
+    if((<any>e.currentTarget).value.length) {
+      if(e.keyCode == 13 || e.which == 13 ) { 
+        this.addTopic();
+      };
+    }
   }
 
   haveTopic() {

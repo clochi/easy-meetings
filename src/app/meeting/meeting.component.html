@@ -38,11 +38,12 @@
               class="meeting__input-container"
                 *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
                 <input
+                  minlength="6"
                   class="meeting__input"
                   matInput
                   placeholder="Tema a tratar"
                   [formControlName]="i"
-                  (keydown)="enterPressed($event)">
+                  (keydown)="enterPressed($event, i)">
                 <mat-icon 
                   (click)="removeTopic(i)"
                   class="meeting__remove"
