@@ -29,12 +29,16 @@ export class MeetingComponent implements OnInit {
     this.topicsControl.push(new FormControl(''));
   }
 
-  enterPressed(e: KeyboardEvent, i) {
-    if((<any>e.currentTarget).value.length) {
-      if(e.keyCode == 13 || e.which == 13 ) { 
-        this.addTopic();
-      };
-    }
+  enterPressed(e: KeyboardEvent) {
+    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13) ) {
+      (<any>e.currentTarget).disabled = true;
+      this.addTopic();
+      setTimeout(() => {
+        document.querySelector('.topics')
+          .querySelector('.ng-pristine')
+            .querySelector('input').focus();
+      })
+    };
   }
 
   haveTopic() {

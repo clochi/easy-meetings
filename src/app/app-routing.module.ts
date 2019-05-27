@@ -4,8 +4,8 @@ import { isLogged } from './guards/login-guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', data: {hideToolbar: true}, loadChildren: './login/login.module#LoginModule'},
-  { path: 'app', data: {hideToolbar: false}, component: DashboardComponent, canActivate: [isLogged]}
+  { path: '', loadChildren: './login/login.module#LoginModule'},
+  { path: 'app', component: DashboardComponent, canActivate: [isLogged]}
 ];
 
 @NgModule({

@@ -6,7 +6,7 @@ import { LoginComponent } from './login/login.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { LoginService } from './login.service';
 import { RedirectLoggedDashboard } from '../guards/redirect-logged-dashboard';

@@ -14,17 +14,22 @@ export class LoginComponent implements OnInit {
     user: null,
     password: null
   }
+
+  sendingData = false;
+
   constructor(
     private loginService: LoginService,
     private ngZone: NgZone,
     private router: Router) { }
 
   onSubmit(form: NgForm) {
+    this.sendingData = true;
     const loginInfo = {
       user: form.value.user,
       password: form.value.password
     }
     this.loginService.loginUser(loginInfo)
+      .then(() => this.sendingData = false)
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { MeetingComponent } from '../meeting/meeting.component';
 import { HttpClient } from '@angular/common/http';
@@ -10,7 +10,10 @@ import { meetings } from '../meeting/meeting.mock';
   styleUrls: ['./dashboard.component.less']
 })
 export class DashboardComponent implements OnInit {
-  constructor(private dialog: MatDialog, private http: HttpClient) {}
+  constructor(
+    private dialog: MatDialog,
+    private http: HttpClient,
+    private ngZone: NgZone) {}
   title = 'easy-meetings';
   meetings: any;
   ngOnInit() {
@@ -18,8 +21,8 @@ export class DashboardComponent implements OnInit {
   }
 
   createMeeting() {
-    this.dialog.open(MeetingComponent, {
+    this.ngZone.run(() => this.dialog.open(MeetingComponent, {
       width: '600px'
-    });
+    }));
   }
 }

@@ -33,7 +33,7 @@
               placeholder="Asistentes"
               formControlName="users">
           </mat-form-field>
-          <div formArrayName="topics">
+          <div class="topics" formArrayName="topics">
             <mat-form-field 
               class="meeting__input-container"
                 *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
@@ -43,7 +43,7 @@
                   matInput
                   placeholder="Tema a tratar"
                   [formControlName]="i"
-                  (keydown)="enterPressed($event, i)">
+                  (keydown)="enterPressed($event)">
                 <mat-icon 
                   (click)="removeTopic(i)"
                   class="meeting__remove"
