@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, of } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { UserService } from '../services/user.service';
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
   constructor(
-    private authFire: AngularFireAuth) { }
+    private authFire: AngularFireAuth,
+    private userService: UserService) { }
 
   loginUser(login) {
     return this.authFire.auth.signInWithEmailAndPassword(login.user, login.password)
-      .then(value => alert('logeó ' + value.user.email))
+      .then(value => {
+        this.userService.getUserInfo(value.user.uid);
+      })
       .catch(err => alert('No se pudo logear ' + err));
   }
 
