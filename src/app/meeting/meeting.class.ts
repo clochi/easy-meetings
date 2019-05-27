@@ -31,6 +31,7 @@ export class Topic {
 export class Meeting {
   id: number;
   date: Date;
+  time: Date;
   topics: Topic[];
   place: string;
   status: boolean;

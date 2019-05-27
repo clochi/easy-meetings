@@ -4,7 +4,7 @@
   </div>
   <div>
     <mat-dialog-content>
-      <form [formGroup]="meetingForm" (ngSubmit)="onSubmit()" novalidate>
+      <form (keydown.enter)="$event.preventDefault()" [formGroup]="meetingForm" (ngSubmit)="onSubmit()" novalidate>
           <div class="flex between">
               <mat-form-field class="meeting__input-50">
                 <input
@@ -38,7 +38,7 @@
               class="meeting__input-container"
                 *ngFor="let topic of meetingForm.get('topics')['controls']; let i = index">
                 <input
-                  minlength="6"
+                  minlength="1"
                   class="meeting__input"
                   matInput
                   placeholder="Tema a tratar"

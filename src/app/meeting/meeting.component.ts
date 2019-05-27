@@ -51,8 +51,16 @@ export class MeetingComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.meetingForm.controls)
+    const meetingData = this.clearEmptyTopic();
+    console.log(this.meetingForm);
   }
 
-
+  clearEmptyTopic() {
+    this.topicsControl.controls
+      .forEach((item, i, arr) => {
+        if(item.value == '') {
+          arr.splice(i, 1)
+        }
+      });
+  }
 }
