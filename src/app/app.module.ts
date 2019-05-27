@@ -19,6 +19,8 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
@@ -42,6 +45,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
   ],
   providers: [
     isLogged,
+    UserService,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
     },
