@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Task } from '../meeting/meeting.class';
+import { Task } from '../classes/task.class';
 import { TaskStatus } from '../constants';
 
 @Component({

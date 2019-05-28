@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Meeting, Topic } from './meeting.class';
+import { Meeting } from './meeting.class';
+import { Topic } from '../classes/topic.class';
+import { MeetingService } from '../services/meeting.service';
+import { TopicService } from '../services/topic.service';
 
 @Component({
   selector: 'em-meeting',
@@ -9,10 +12,16 @@ import { Meeting, Topic } from './meeting.class';
 })
 export class MeetingComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private meetingService: MeetingService,
+    private topicService: TopicService) { }
+
+  isSending = false;
   meetingForm: FormGroup;
   meeting: Meeting;
+  topics: Topic[] = [];
   topicsControl;
+
   ngOnInit() {
     this.meetingForm = new FormGroup({
       date: new FormControl(null, Validators.required),
@@ -51,8 +60,38 @@ export class MeetingComponent implements OnInit {
   }
 
   onSubmit() {
-    const meetingData = this.clearEmptyTopic();
-    console.log(this.meetingForm);
+    this.isSending = true;
+    this.clearEmptyTopic();
+    this.extractFormData();
+    this.meetingService.saveMeeting(this.meeting.toPlain())
+      .then(meeting => {
+        this.topicsControl.controls.forEach(control => {
+          const topic = {
+            meetingId: meeting.id,
+            topic: control.value
+          } as Topic
+          this.topics.push(new Topic(topic))
+        });
+        meeting.update({id: meeting.id});
+        this.topicService.saveTopics(this.topics)
+          .then(() => {
+            this.isSending = false;
+            alert('Todo se guardó correctamente')
+          })
+          .catch(() => alert('Algo salió mal al guardar los temas'))
+      })
+      .catch(() => alert('Algo salió mal al crear la reunión'))
+  }
+
+  extractFormData() {
+    const form = this.meetingForm.controls;
+    const formData = {
+      date: form.date.value,
+      place: form.place.value,
+      time: form.time.value,
+      users: form.users.value
+    } as Meeting
+    this.meeting = new Meeting(formData);
   }
 
   clearEmptyTopic() {

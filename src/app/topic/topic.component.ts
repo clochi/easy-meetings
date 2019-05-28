@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TaskStatus } from '../constants';
-import { Task } from '../meeting/meeting.class';
+import { Task } from '../classes/task.class';
 
 @Component({
   selector: 'em-topic',

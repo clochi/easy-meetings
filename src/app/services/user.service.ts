@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { User } from '../classes/user.class';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   
-  userInfo;
+  private _userInfo: User;
+  get userInfo(): User {
+    return this._userInfo;
+  }
   constructor(private firestore: AngularFirestore) { }
 
   getUserInfo(id) {
-    this.firestore.collection('users').doc(id).get()
+    this.firestore.collection('users').doc(id).valueChanges()
       .subscribe(user => {
-        this.userInfo = user.data()});
+        this._userInfo = new User(user)});
   }
 }
