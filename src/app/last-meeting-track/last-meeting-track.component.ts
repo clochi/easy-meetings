@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Meeting, Task } from '../meeting/meeting.class';
+import { Meeting } from '../meeting/meeting.class';
+import { Task } from '../classes/task.class';
 import * as moment from 'moment';
 
 @Component({

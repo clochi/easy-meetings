@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'em-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
     user: null,
     password: null
   }
-
+  loginSubscription: Subscription;
   sendingData = false;
 
   constructor(
@@ -33,10 +34,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loginService.isLogged()
+    this.loginSubscription = this.loginService.isLogged()
       .subscribe(logged => {
         if(logged) {this.ngZone.run(() => this.router.navigate(['app']))};
       })
+  }
+
+  ngOnDestroy() {
+    this.loginSubscription.unsubscribe();
   }
 
 }
