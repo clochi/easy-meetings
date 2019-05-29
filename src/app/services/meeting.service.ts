@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UserService } from './user.service';
-import { Meeting } from '../meeting/meeting.class';
+import { Meeting } from '../classes/meeting.class';
 
 @Injectable({
   providedIn: 'root'

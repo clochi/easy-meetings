@@ -1,8 +1,8 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { MeetingComponent } from '../meeting/meeting.component';
+import { MeetingFormComponent } from '../meeting-form/meeting-form.component';
 import { HttpClient } from '@angular/common/http';
-import { meetings } from '../meeting/meeting.mock';
+import { meetings } from '../meeting-form/meeting.mock';
 
 @Component({
   selector: 'em-dashboard',
@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
   }
 
   createMeeting() {
-    this.ngZone.run(() => this.dialog.open(MeetingComponent, {
+    this.ngZone.run(() => this.dialog.open(MeetingFormComponent, {
       width: '600px'
     }));
   }

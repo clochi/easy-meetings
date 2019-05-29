@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Meeting } from './meeting.class';
+import { Meeting } from '../classes/meeting.class';
 import { Topic } from '../classes/topic.class';
 import { MeetingService } from '../services/meeting.service';
 import { TopicService } from '../services/topic.service';
 
 @Component({
-  selector: 'em-meeting',
-  templateUrl: './meeting.component.html',
-  styleUrls: ['./meeting.component.less']
+  selector: 'em-meeting-form',
+  templateUrl: './meeting-form.component.html',
+  styleUrls: ['./meeting-form.component.less']
 })
-export class MeetingComponent implements OnInit {
+export class MeetingFormComponent implements OnInit {
 
   constructor(
     private meetingService: MeetingService,
