@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { LoginService } from './login.service';
 import { RedirectLoggedDashboard } from '../guards/redirect-logged-dashboard';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -17,6 +18,7 @@ import { RedirectLoggedDashboard } from '../guards/redirect-logged-dashboard';
     CommonModule,
     LoginRoutingModule,
     MaterialModule,
+    SharedModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule
