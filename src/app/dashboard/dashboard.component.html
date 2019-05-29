@@ -1,4 +1,8 @@
 <div style="width: 800px; margin: 0 auto">
+  <em-spinner
+    [isLoading]="isLoading"
+    message="Cargando..."
+    ></em-spinner>
   <section>
       <h2>Seguimiento de la reunión anterior</h2>
       <ul class="captions">
@@ -10,5 +14,5 @@
   <section>
     <h2>Proximas reuniónes</h2>
   </section>
-  <button mat-raised-button color="primary"  (click)="createMeeting()">Nueva reunión</button>
+  <button mat-raised-button color="primary" (click)="createMeeting()">Nueva reunión</button>
 </div>

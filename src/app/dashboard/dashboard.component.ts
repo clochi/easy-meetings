@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient,
     private ngZone: NgZone) {}
   title = 'easy-meetings';
+  isLoading = false;
   meetings: any;
   ngOnInit() {
     this.meetings = meetings;
