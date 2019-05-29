@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MeetingComponent } from './meeting/meeting.component';
+import { MeetingFormComponent } from './meeting-form/meeting-form.component';
 import { MeetingItemComponent } from './meeting-item/meeting-item.component';
 import { LastMeetingTrackComponent } from './last-meeting-track/last-meeting-track.component';
 import { TopicComponent } from './topic/topic.component';
@@ -26,7 +26,7 @@ import { SharedModule } from './shared/shared.module';
 @NgModule({
   declarations: [
     AppComponent,
-    MeetingComponent,
+    MeetingFormComponent,
     MeetingItemComponent,
     LastMeetingTrackComponent,
     TopicComponent,
@@ -53,7 +53,7 @@ import { SharedModule } from './shared/shared.module';
     },
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
-  entryComponents: [MeetingComponent],
+  entryComponents: [MeetingFormComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

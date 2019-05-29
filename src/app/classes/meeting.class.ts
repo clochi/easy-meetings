@@ -1,5 +1,4 @@
-import { User } from '../classes/user.class';
-import { Topic } from '../classes/topic.class';
+import { Topic } from './topic.class';
 
 export class Meeting {
   date: Date;
