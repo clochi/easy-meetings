@@ -12,7 +12,11 @@ export class Meeting {
 
   constructor(meeting: Meeting) {
     Object.keys(meeting)
-      .forEach(item => this[item] = meeting[item]);
+      .forEach(item => {
+        item == 'date' ?
+          this[item] = new Date(meeting[item])
+            : this[item] = meeting[item]
+      });
   }
 
   toPlain() {

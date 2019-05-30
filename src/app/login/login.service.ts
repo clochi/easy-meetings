@@ -22,8 +22,12 @@ export class LoginService {
   isLogged(): Observable<boolean>{
     return new Observable(observer => {
       this.authFire.auth.onAuthStateChanged( user => {
-        if(user) { this.userService.getUserInfo(user.uid)};
-        observer.next(!!user);
+        if(user && !this.userService.userInfo) {
+          this.userService.getUserInfo(user.uid)
+            .subscribe(() => observer.next(true));
+        } else {
+          observer.next(!!user);
+        }
       });
     })
   };

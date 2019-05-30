@@ -4,6 +4,7 @@ import { Meeting } from '../classes/meeting.class';
 import { Topic } from '../classes/topic.class';
 import { MeetingService } from '../services/meeting.service';
 import { TopicService } from '../services/topic.service';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'em-meeting-form',
@@ -14,7 +15,8 @@ export class MeetingFormComponent implements OnInit {
 
   constructor(
     private meetingService: MeetingService,
-    private topicService: TopicService) { }
+    private topicService: TopicService,
+    private dialogRef: MatDialogRef<MeetingFormComponent>) { }
 
   isSending = false;
   meetingForm: FormGroup;
@@ -73,9 +75,11 @@ export class MeetingFormComponent implements OnInit {
           this.topics.push(new Topic(topic))
         });
         meeting.update({id: meeting.id});
+        
         this.topicService.saveTopics(this.topics)
           .then(() => {
             this.isSending = false;
+            this.dialogRef.close();
             alert('Todo se guardó correctamente')
           })
           .catch(() => alert('Algo salió mal al guardar los temas'))

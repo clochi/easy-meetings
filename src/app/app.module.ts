@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,14 +15,17 @@ import { TopicComponent } from './topic/topic.component';
 import { TaskComponent } from './task/task.component';
 import { isLogged } from './guards/login-guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { LocationStrategy, HashLocationStrategy, registerLocaleData } from '@angular/common';
+import localArg from '@angular/common/locales/es-AR';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { UserService } from './services/user.service';
 import { SharedModule } from './shared/shared.module';
+import { NextMeetingsComponent } from './next-meetings/next-meetings.component';
 
+registerLocaleData(localArg);
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +34,8 @@ import { SharedModule } from './shared/shared.module';
     LastMeetingTrackComponent,
     TopicComponent,
     TaskComponent,
-    DashboardComponent
+    DashboardComponent,
+    NextMeetingsComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +55,7 @@ import { SharedModule } from './shared/shared.module';
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
     },
+    {provide: LOCALE_ID, useValue: 'es-AR'},
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   entryComponents: [MeetingFormComponent],

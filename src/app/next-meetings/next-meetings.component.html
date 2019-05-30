@@ -1,0 +1,7 @@
+<div class="next-meetings">
+  <em-spinner [isLoading]="isLoading"></em-spinner>
+  <div *ngFor="let meeting of meetings">
+    <em-meeting-item [meeting]="meeting">
+    </em-meeting-item>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../classes/user.class';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,13 @@ export class UserService {
   constructor(private firestore: AngularFirestore) { }
 
   getUserInfo(id) {
-    this.firestore.collection('users').doc(id).valueChanges()
-      .subscribe(user => {
-        this._userInfo = new User(user)});
+    return new Observable(observer => {
+      this.firestore.collection('users').doc(id).valueChanges()
+        .subscribe(user => {
+          this._userInfo = new User(user);
+          observer.next()
+        });
+    }) 
   }
+
 }
