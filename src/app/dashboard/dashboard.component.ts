@@ -1,5 +1,5 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { MeetingFormComponent } from '../meeting-form/meeting-form.component';
 import { HttpClient } from '@angular/common/http';
 import { meetings } from '../meeting-form/meeting.mock';
@@ -17,12 +17,13 @@ export class DashboardComponent implements OnInit {
   title = 'easy-meetings';
   isLoading = false;
   meetings: any;
+  dialogRef;
   ngOnInit() {
     this.meetings = meetings;
   }
 
   createMeeting() {
-    this.ngZone.run(() => this.dialog.open(MeetingFormComponent, {
+    this.ngZone.run(() => this.dialogRef = this.dialog.open(MeetingFormComponent, {
       width: '600px'
     }));
   }
