@@ -41,7 +41,7 @@ export class MeetingFormComponent implements OnInit {
   }
 
   enterPressed(e: KeyboardEvent) {
-    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13) ) {
+    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13)) {
       (<any>e.currentTarget).disabled = true;
       this.addTopic();
       setTimeout(() => {
@@ -53,7 +53,7 @@ export class MeetingFormComponent implements OnInit {
   }
 
   haveTopic() {
-       return this.topicsControl.controls[0].value != '';
+       return !!this.topicsControl.controls[0].value;
   }
 
   removeTopic(index) {

@@ -21,9 +21,9 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { UserService } from './services/user.service';
 import { SharedModule } from './shared/shared.module';
 import { NextMeetingsComponent } from './next-meetings/next-meetings.component';
+import { MeetingComponent } from './meeting/meeting.component';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -35,7 +35,8 @@ registerLocaleData(localArg);
     TopicComponent,
     TaskComponent,
     DashboardComponent,
-    NextMeetingsComponent
+    NextMeetingsComponent,
+    MeetingComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +52,6 @@ registerLocaleData(localArg);
   ],
   providers: [
     isLogged,
-    UserService,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
     },
