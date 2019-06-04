@@ -30,9 +30,9 @@ export class MeetingService {
   
   getAllMeetings(): Observable<Meeting[]> {
     return new Observable(observer => {
-      const meetingList: Meeting[] = [];
       this.meetings
         .onSnapshot(meetings => {
+          const meetingList: Meeting[] = [];
           meetings.forEach(meeting => {
             meetingList.push(new Meeting(meeting.data() as Meeting))
           })

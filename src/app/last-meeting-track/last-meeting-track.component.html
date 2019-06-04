@@ -1,6 +1,16 @@
 <div class="last-meeting-track">
-  <a routerLink="/app/meetings/{{meeting?.id}}">Ir a reunión</a>
+  <em-spinner
+    [isLoading]="isLoading">
+  </em-spinner>
+  <p *ngIf="!isLoading && !meeting?.id">No se encuentran reuniones finalizadas</p>
+  <div *ngIf="meeting?.id">
+    <ul class="captions">
+      <li><div class="success-icon"></div>Lo que se hizo</li>
+      <li><div class="fail-icon"></div>Lo que no se hizo</li>
+    </ul>
+    <a routerLink="/app/meetings/{{meeting?.id}}">Ir a reunión</a>
     <div *ngFor="let topic of meeting?.topics">
       <em-topic [topic]="topic"></em-topic>
     </div>
   </div>
+</div>

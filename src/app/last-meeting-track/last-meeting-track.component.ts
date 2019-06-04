@@ -10,11 +10,15 @@ import * as moment from 'moment';
 })
 export class LastMeetingTrackComponent implements OnInit {
   @Input() set meetings(meets){
-    this.meeting = this.getLastMeetingClosed(meets);
+    if(meets.length) {
+      this.isLoading = false;
+      this.meeting = this.getLastMeetingClosed(meets);
+    }
   };
   
   meeting: Meeting;
   tasks: Task[] = [];
+  isLoading = true;
   constructor() { }
 
   ngOnInit() {
