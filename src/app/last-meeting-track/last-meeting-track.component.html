@@ -1,4 +1,5 @@
 <div class="last-meeting-track">
+  <a routerLink="/app/meetings/{{meeting?.id}}">Ir a reunión</a>
     <div *ngFor="let topic of meeting?.topics">
       <em-topic [topic]="topic"></em-topic>
     </div>

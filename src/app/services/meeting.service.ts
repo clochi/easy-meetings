@@ -15,7 +15,7 @@ import { Track } from '../classes/track.class';
 })
 export class MeetingService {
 
-  private get meetings() {
+  public get meetings() {
     return this.firestore.firestore.collection('groups')
       .doc(this.userService.userInfo.activeGroup)
         .collection('meetings');
@@ -28,6 +28,19 @@ export class MeetingService {
     private trackService: TrackService
   ) { }
   
+  getAllMeetings(): Observable<Meeting[]> {
+    return new Observable(observer => {
+      const meetingList: Meeting[] = [];
+      this.meetings
+        .onSnapshot(meetings => {
+          meetings.forEach(meeting => {
+            meetingList.push(new Meeting(meeting.data() as Meeting))
+          })
+          observer.next(meetingList);
+        })
+    })
+  }
+
   getMeeting(id: string): Observable<Meeting> {
     let returnMeeting: Meeting;
     let tasks: Task[] = [];
@@ -35,7 +48,10 @@ export class MeetingService {
 
     return new Observable(observer => {
       this.meetings.doc(id).onSnapshot(meeting => {
-        if(!meeting.data()) return returnMeeting;
+        if(!meeting.data()) {
+          observer.next(returnMeeting);
+          return;
+        };
         returnMeeting = new Meeting(meeting.data() as Meeting);
         this.topicService.getTopics(meeting.id)
           .subscribe(topics => {

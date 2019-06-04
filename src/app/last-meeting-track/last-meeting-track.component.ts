@@ -9,9 +9,9 @@ import * as moment from 'moment';
   styleUrls: ['./last-meeting-track.component.less']
 })
 export class LastMeetingTrackComponent implements OnInit {
-  @Input() set meetings(meetings) {
-    this.meeting = this.getLastMeetingClosed(meetings)
-  }
+  @Input() set meetings(meets){
+    this.meeting = this.getLastMeetingClosed(meets);
+  };
   
   meeting: Meeting;
   tasks: Task[] = [];

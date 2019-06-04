@@ -4,6 +4,10 @@
     [isLoading]="isLoading">
   </em-spinner>
   
+  <div *ngIf="!meeting && !isLoading">
+    <span>Esta reunión no existe</span><span><em-go-back></em-go-back></span>
+  </div>
+
   <div *ngIf="meeting" class="meeting-info">
     <h2>Detalles de reunión</h2>
     <p>Fecha {{meeting.date | date:short}}</p>
@@ -15,4 +19,5 @@
       </div>
     </div>
   </div>
+
 </div>

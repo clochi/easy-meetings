@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
-import { Task } from '../classes/task.class';
 import { TaskService } from '../services/task.service';
 
 @Component({
