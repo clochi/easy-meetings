@@ -2,6 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'em-next-meetings',
@@ -15,7 +16,8 @@ export class NextMeetingsComponent implements OnInit {
   isLoading = false;
   constructor(
     private meetingService: MeetingService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -27,6 +29,10 @@ export class NextMeetingsComponent implements OnInit {
           this.isLoading = false;
         })
       })
+  }
+  
+  goMeeting(meetingId) {
+    this.router.navigate([`app/meetings/${meetingId}`])
   }
 
   ngOnDestroy() {

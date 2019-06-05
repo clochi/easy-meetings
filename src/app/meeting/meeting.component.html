@@ -8,16 +8,6 @@
     <span>Esta reunión no existe</span><span><em-go-back></em-go-back></span>
   </div>
 
-  <div *ngIf="meeting" class="meeting-info">
-    <h2>Detalles de reunión</h2>
-    <p>Fecha {{meeting.date | date:short}}</p>
-    <div class="meeting_topics">
-      <h3>Temas a tratar</h3>
-      <div class="meeting__topic" *ngFor="let topic of meeting.topics">
-        <p>{{topic.topic}}</p>
-        <button mat-raised-button color="primary">Agregar tarea</button>
-      </div>
-    </div>
-  </div>
+  <em-open-meeting *ngIf="meeting" [meeting]="meeting"></em-open-meeting>
 
 </div>

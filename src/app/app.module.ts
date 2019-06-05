@@ -23,6 +23,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { SharedModule } from './shared/shared.module';
 import { NextMeetingsComponent } from './next-meetings/next-meetings.component';
 import { MeetingComponent } from './meeting/meeting.component';
+import { OpenMeetingComponent } from './open-meeting/open-meeting.component';
+import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.component';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -35,7 +37,9 @@ registerLocaleData(localArg);
     TaskComponent,
     DashboardComponent,
     NextMeetingsComponent,
-    MeetingComponent
+    MeetingComponent,
+    OpenMeetingComponent,
+    ClosedMeetingComponent
   ],
   imports: [
     BrowserModule,

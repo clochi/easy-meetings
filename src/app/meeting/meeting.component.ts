@@ -1,9 +1,8 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
-import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'em-meeting',
@@ -15,8 +14,8 @@ export class MeetingComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private meetingService: MeetingService,
-    private changeDetector: ChangeDetectorRef,
-    private taskService: TaskService
+    private ngZone: NgZone,
+    
   ) { }
 
   paramSubscription: Subscription;
@@ -29,15 +28,12 @@ export class MeetingComponent implements OnInit {
       .subscribe(param => {
         this.meetingService.getMeeting(param.id)
           .subscribe(data => {
-            this.isLoading = false;
-            this.meeting = data;
-            this.changeDetector.detectChanges();
+            this.ngZone.run(() => {
+              this.isLoading = false;
+              this.meeting = data;
+            })
           })
       })
-  }
-
-  addTask(topicId: string) {
-    
   }
 
   ngOnDestroy() {

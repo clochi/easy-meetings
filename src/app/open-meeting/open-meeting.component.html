@@ -1,0 +1,51 @@
+<div *ngIf="meeting" class="meeting-info">
+  <h2>Detalles de reunión</h2>
+  <p>Fecha {{meeting.date | date:short}}</p>
+  <div class="meeting_topics">
+    <h3>Temas a tratar</h3>
+    <form (keydown.enter)="$event.preventDefault()" [formGroup]="taskForm">
+      <div class="meeting__topic" *ngFor="let topic of meeting.topics">
+        <p>{{topic.topic}}</p>
+        <div class="{{topic.id}}" formArrayName="{{topic.id}}">
+          <div *ngFor="let topicItem of taskForm.get(topic.id)['controls']; let i = index">
+                <div [formGroupName]="i">
+                    <mat-form-field 
+                      class="meeting__input-container">
+                        <input
+                          minlength="1"
+                          class="meeting__input"
+                          matInput
+                          id="{{topic.id}}{{i}}"
+                          placeholder="Agregar tarea"
+                          formControlName="task"
+                          (keydown)="enterPressed($event, topic.id)">
+                        <mat-icon 
+                          (click)="removeTopic(i, topic.id)"
+                          class="meeting__remove"
+                          aria-label="Remove button"
+                          >delete</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field 
+                      class="meeting__input-container">
+                        <input
+                          minlength="1"
+                          class="meeting__input"
+                          matInput
+                          id="{{topic.id}}{{i}}"
+                          placeholder="Agregar usuario"
+                          formControlName="user"
+                          (keydown)="enterPressed($event, topic.id, topicItem)">
+                        <mat-icon 
+                          (click)="removeTopic(i, topic.id)"
+                          class="meeting__remove"
+                          aria-label="Remove button"
+                          >delete</mat-icon>
+                    </mat-form-field>
+                </div>
+          </div>
+        </div>
+        <!-- <button mat-raised-button color="primary" (click)="addTask(topic.id)">Agregar tarea</button> -->
+      </div>
+    </form>
+  </div>
+</div>
