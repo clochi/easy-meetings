@@ -8,6 +8,7 @@ export class Meeting {
   place: string;
   status: boolean = true;
   time: Date;
+  nextTopics?: string;
   topics?: Topic[] = [];
   users: string; //This is going to be User type
 

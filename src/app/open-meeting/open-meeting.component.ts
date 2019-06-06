@@ -2,7 +2,11 @@ import { Component, OnInit, Input } from '@angular/core';
 import { TaskService } from '../services/task.service';
 import { Task } from '../classes/task.class';
 import { Meeting } from '../classes/meeting.class';
-import { FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
+import { GroupService } from '../services/group.service';
+import { Subscription } from 'rxjs';
+import { User } from '../classes/user.class';
+import { TaskStatus } from '../constants';
 
 @Component({
   selector: 'em-open-meeting',
@@ -13,16 +17,27 @@ export class OpenMeetingComponent implements OnInit {
   @Input() meeting: Meeting;
   tasks: Task[] = [];
   taskForm: FormGroup;
+  userListSubscription: Subscription
+  userList: User[] = [];
   constructor(
-    private taskService: TaskService
+    private taskService: TaskService,
+    private groupService: GroupService
   ) { }
 
   ngOnInit() {
+    this.userListSubscription = this.groupService.getActiveGroup()
+      .subscribe(data => {
+        (<Array<{}>>data.payload.data()['users'])
+          .forEach(user => {
+            this.userList.push(new User(user))
+          })
+      })
     this.taskForm = new FormGroup({})
     this.meeting.topics.forEach(topic => {
       this.taskForm.addControl(topic.id, new FormArray([]));
       this.addInput(topic.id);
-    })
+    });
+    this.taskForm.addControl('nextMeeting', new FormControl(''));
   }
 
   getControl(topicId) {
@@ -30,30 +45,78 @@ export class OpenMeetingComponent implements OnInit {
   }
 
   addInput(topicId) {
-    (<FormArray>this.taskForm.get(topicId)).push(new FormGroup({user: new FormControl(''), task: new FormControl('')}))//.push(new FormControl(''));
+    const topicTasks = (<FormArray>this.taskForm.get(topicId))
+    if (topicTasks.controls.length) {
+      topicTasks
+        .push(new FormGroup({
+          user: new FormControl(''),
+          task: new FormControl('')})
+        );
+    } else {
+      topicTasks
+        .push(new FormGroup({
+            user: new FormControl('', Validators.required),
+            task: new FormControl('', Validators.required)
+          })
+        );
+    }
   }
 
-  addTask(topicId: string) {
-    alert(topicId)
+  userSelected(index, topicId) {
+    if (this.getControl(topicId).controls[index + 1]) return;
+    this.addInput(topicId)
+    setTimeout(() => {
+      document.querySelector(`.${CSS.escape(topicId)}`)
+        .querySelector('.ng-pristine')
+        .querySelector('input').focus();
+    })
   }
 
-  enterPressed(e: KeyboardEvent, topicId, topicItem) {
-    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13)) {
-      (<any>e.currentTarget).disabled = true;
-      if(topicItem) { this.addInput(topicId) };
-      setTimeout(() => {
-        document.querySelector(`.${CSS.escape(topicId)}`)
-          .querySelector('.ng-pristine')
-            .querySelector('input').focus();
-      })
-    };
-  }
-
-  removeTopic(index, topicId, item) {
-    const inputElement = (<HTMLInputElement>document.querySelector(`.${CSS.escape(topicId)}`)
-      .querySelector(`input[id=${CSS.escape(topicId+index)}]`))
-    if(!inputElement.disabled) return;
+  removeTask(index, topicId) {
+    if (!this.getControl(topicId).controls[index + 1]) return;
     this.getControl(topicId).removeAt(index);
+  }
+
+  finishMeeting() {
+    this.clearEmptyTopic();
+    this.extractFormData();
+    debugger
+  }
+
+  extractFormData() {
+    const form = this.taskForm.controls;
+    Object.keys(form)
+      .forEach(key => {
+        if(key !== 'nextMeeting') {
+          form[key].value.forEach(taskData => {
+            const task: Task = {
+              assigned: taskData.user,
+              task: taskData.task,
+              topicId: key,
+              date: new Date(),
+              meetingId: this.meeting.id,
+              status: TaskStatus.pending,
+            }
+            this.tasks.push(new Task(task))
+          })
+        }
+        
+      })
+  }
+
+  clearEmptyTopic() {
+    const form = this.taskForm.controls;
+    Object.keys(form)
+      .forEach(key => {
+        if(key !== 'nextMeeting') {
+          form[key].value
+            .forEach((item, i, arr) => {
+              if(item.task == '') {
+                arr.splice(i, 1)
+              }
+          });
+        }
+      })
   }
 
 }
