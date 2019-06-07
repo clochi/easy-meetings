@@ -33,4 +33,15 @@ export class TaskService {
           })
     })
   }
+
+  saveTasks(tasks: Task[]) {
+    const taskBatch = this.firestore.firestore.batch();
+    tasks.forEach(task => {
+      task.id = this.firestore.createId();
+      const taskRef = this.firestore.collection('tasks')
+        .doc(task.id).ref;
+      taskBatch.set(taskRef, task.toPlain())
+    })
+    return taskBatch.commit();
+  }
 }

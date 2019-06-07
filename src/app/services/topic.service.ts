@@ -24,13 +24,11 @@ export class TopicService {
   }
 
   saveTopics(topics: Topic[]) {
-    const meetingId = topics[0].meetingId;
     const topicBatch = this.firestore.firestore.batch();
     topics.forEach(topic => {
-      const topicId = this.firestore.createId();
+      topic.id = this.firestore.createId();
       const newDoc = this.firestore.collection('topics')
-        .doc(topicId).ref;
-      topic.id = topicId;
+        .doc(topic.id).ref;
       topicBatch.set(newDoc, topic.toPlain())
     });
     return topicBatch.commit()

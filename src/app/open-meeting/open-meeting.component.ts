@@ -7,6 +7,7 @@ import { GroupService } from '../services/group.service';
 import { Subscription } from 'rxjs';
 import { User } from '../classes/user.class';
 import { TaskStatus } from '../constants';
+import { MeetingService } from '../services/meeting.service';
 
 @Component({
   selector: 'em-open-meeting',
@@ -21,7 +22,8 @@ export class OpenMeetingComponent implements OnInit {
   userList: User[] = [];
   constructor(
     private taskService: TaskService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private meetingService: MeetingService
   ) { }
 
   ngOnInit() {
@@ -80,6 +82,11 @@ export class OpenMeetingComponent implements OnInit {
   finishMeeting() {
     this.clearEmptyTopic();
     this.extractFormData();
+    this.taskService.saveTasks(this.tasks)
+      .then(() => {
+        this.meetingService.meetings.doc(this.meeting.id)
+          //.set({status: false}) continuar desde aquí
+      })
     debugger
   }
 
@@ -96,7 +103,7 @@ export class OpenMeetingComponent implements OnInit {
               date: new Date(),
               meetingId: this.meeting.id,
               status: TaskStatus.pending,
-            }
+            } as Task;
             this.tasks.push(new Task(task))
           })
         }
@@ -118,5 +125,4 @@ export class OpenMeetingComponent implements OnInit {
         }
       })
   }
-
 }

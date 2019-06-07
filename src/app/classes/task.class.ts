@@ -25,4 +25,8 @@ export class Task {
         }
       })
   }
+
+  toPlain() {
+    return JSON.parse(JSON.stringify(this));
+  }
 }

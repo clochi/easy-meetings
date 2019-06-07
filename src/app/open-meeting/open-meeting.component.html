@@ -8,34 +8,34 @@
         <p>{{topic.topic}}</p>
         <div class="{{topic.id}}" formArrayName="{{topic.id}}">
           <div *ngFor="let topicItem of taskForm.get(topic.id)['controls']; let i = index">
-                <div [formGroupName]="i">
-                    <mat-form-field 
-                      class="meeting__input-container">
-                        <input
-                          minlength="1"
-                          class="meeting__input"
-                          [attr.data-input]="topic.id+i"
-                          matInput
-                          placeholder="Agregar tarea"
-                          formControlName="task">
-                    </mat-form-field>
-                    <mat-form-field 
-                      class="meeting__input-container">
-                        <mat-label>Asignar a usuario</mat-label>
-                        <mat-select 
-                          (selectionChange)="userSelected(index, topic.id)"
-                          formControlName="user">
-                          <mat-option *ngFor="let user of userList" [value]="user">
-                            {{user.name}}
-                          </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <mat-icon 
-                (click)="removeTask(i, topic.id)"
-                class="meeting__remove"
-                aria-label="Remove button"
-                >delete</mat-icon>
+            <div [formGroupName]="i">
+                <mat-form-field 
+                  class="meeting__input-container">
+                    <input
+                      minlength="1"
+                      class="meeting__input"
+                      [attr.data-input]="topic.id+i"
+                      matInput
+                      placeholder="Agregar tarea"
+                      formControlName="task">
+                </mat-form-field>
+                <mat-form-field 
+                  class="meeting__input-container">
+                    <mat-label>Asignar a usuario</mat-label>
+                    <mat-select 
+                      (selectionChange)="userSelected(index, topic.id)"
+                      formControlName="user">
+                      <mat-option *ngFor="let user of userList" [value]="user">
+                        {{user.name}}
+                      </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <mat-icon 
+            (click)="removeTask(i, topic.id)"
+            class="meeting__remove"
+            aria-label="Remove button"
+            >delete</mat-icon>
           </div>
         </div>
       </div>
