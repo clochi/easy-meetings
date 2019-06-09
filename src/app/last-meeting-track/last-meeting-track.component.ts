@@ -1,7 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgZone } from '@angular/core';
 import { Meeting } from '../classes/meeting.class';
 import { Task } from '../classes/task.class';
 import * as moment from 'moment';
+import { MeetingService } from '../services/meeting.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'em-last-meeting-track',
@@ -9,17 +11,24 @@ import * as moment from 'moment';
   styleUrls: ['./last-meeting-track.component.less']
 })
 export class LastMeetingTrackComponent implements OnInit {
+  meetingSubscription: Subscription
   @Input() set meetings(meets){
     if(meets.length) {
-      this.isLoading = false;
       this.meeting = this.getLastMeetingClosed(meets);
+      this.meetingSubscription = this.meetingService.getMeeting(this.meeting.id)
+        .subscribe(meeting => this.ngZone.run(() => {
+          this.meeting = meeting
+          this.isLoading = false;
+        }));
     }
   };
   
   meeting: Meeting;
   tasks: Task[] = [];
   isLoading = true;
-  constructor() { }
+  constructor(
+    private meetingService: MeetingService,
+    private ngZone: NgZone) { }
 
   ngOnInit() {
   }
@@ -29,6 +38,10 @@ export class LastMeetingTrackComponent implements OnInit {
     const mayorDate = moment.max(datesList);
     return meetings
       .find(meeting => moment(mayorDate).isSame(moment(meeting.date)) && !meeting.status)
+  }
+
+  ngOnDestroy() {
+    this.meetingSubscription.unsubscribe();
   }
 
 }

@@ -85,7 +85,8 @@ export class OpenMeetingComponent implements OnInit {
     this.taskService.saveTasks(this.tasks)
       .then(() => {
         this.meetingService.meetings.doc(this.meeting.id)
-          //.set({status: false}) continuar desde aquí
+          .update({status: false})
+            .then(() => alert('La reunión se guardó correctamente'));
       })
     debugger
   }

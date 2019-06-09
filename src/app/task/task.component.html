@@ -5,7 +5,7 @@
           class="task__left-side flex between"
           [ngClass]="isDone(task) ? 'mat-list-item--done' : 'mat-list-item--pending'">
             <div>{{task.task}}</div>
-            <div>{{task.assigned}}</div>
+            <div>{{task.assigned.name}}</div>
         </div>
         <div class="task__right-side flex center">
           <mat-checkbox [checked]="isDone(task)" [disabled]="true"></mat-checkbox>

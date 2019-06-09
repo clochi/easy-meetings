@@ -8,6 +8,6 @@
     <span>Esta reunión no existe</span><span><em-go-back></em-go-back></span>
   </div>
 
-  <em-open-meeting *ngIf="meeting" [meeting]="meeting"></em-open-meeting>
+  <em-open-meeting *ngIf="meeting?.status" [meeting]="meeting"></em-open-meeting>
 
 </div>

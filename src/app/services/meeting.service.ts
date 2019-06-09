@@ -9,6 +9,7 @@ import { Topic } from '../classes/topic.class';
 import { Task } from '../classes/task.class';
 import { TrackService } from './track.service';
 import { Track } from '../classes/track.class';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -88,7 +89,9 @@ export class MeetingService {
         .onSnapshot(data => {
           const meetingList: Meeting[] = [];
           data.docs.forEach(meeting => {
-            meetingList.push( new Meeting(meeting.data() as Meeting) );
+            if (moment((<Meeting>meeting.data()).date).isSameOrAfter(moment())) {
+              meetingList.push( new Meeting(meeting.data() as Meeting) );
+            }
           })
           observer.next(meetingList);
         })
