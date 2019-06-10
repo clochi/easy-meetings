@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Meeting } from '../classes/meeting.class';
 
 @Component({
   selector: 'em-closed-meeting',
@@ -6,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./closed-meeting.component.less']
 })
 export class ClosedMeetingComponent implements OnInit {
-
+  @Input() meeting: Meeting;
   constructor() { }
 
   ngOnInit() {

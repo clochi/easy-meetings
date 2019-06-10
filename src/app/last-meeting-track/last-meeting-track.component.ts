@@ -17,7 +17,7 @@ export class LastMeetingTrackComponent implements OnInit {
       this.meeting = this.getLastMeetingClosed(meets);
       this.meetingSubscription = this.meetingService.getMeeting(this.meeting.id)
         .subscribe(meeting => this.ngZone.run(() => {
-          this.meeting = meeting
+          this.meeting = meeting;
           this.isLoading = false;
         }));
     }
