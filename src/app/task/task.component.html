@@ -1,14 +1,46 @@
-<div class="task">
+<div class="task" (click)="$event.stopPropagation()">
     <div>
       <div class="mat-list-item-content flex between">
         <div 
-          class="task__left-side flex between"
-          [ngClass]="isDone(task) ? 'mat-list-item--done' : 'mat-list-item--pending'">
-            <div>{{task.task}}</div>
-            <div>{{task.assigned.name}}</div>
+          class="task__left-side flex column"
+          [ngClass]="isDone(task) ? 'mat-list-item--done' : 'mat-list-item--pending'"
+          (click)="readOnly !== undefined ? false : toggleTrack()">
+            <div class="flex between">
+              <div>{{task.task}}</div>
+              <div>{{task.assigned.name}}</div>
+            </div>
+            <div *ngIf="showTracks" (click)="$event.stopPropagation()">
+              <div class="task__tracks-container" *ngFor="let track of task?.tracks">
+                <div class="task__track-author-date">{{track.date}} {{track.user.name}}</div>
+                <div class="task__track-info">{{track.info}}</div>
+              </div>
+              <div class="task__track-form">
+                <form (keydown.enter)="$event.preventDefault()" [formGroup]="trackForm">
+                  <div class="tracks flex column between" formArrayName="tracks">
+                    <mat-form-field
+                      *ngFor="let track of trackForm.get('tracks')['controls']; let i = index">
+                        <input
+                          matInput 
+                          type="text"
+                          placeholder="Agregar seguimiento"
+                          [formControlName]="i"
+                          (keydown.enter)="enterPressed()"
+                          >
+                          <mat-icon
+                            style="color: #000000"
+                            (click)="removeTrack(i)"
+                            class="track__remove"
+                            aria-label="Remove button"
+                            *ngIf="!!trackForm.get('tracks')['controls'][i].value">delete</mat-icon>
+                    </mat-form-field>
+                  </div>
+                  <button mat-raised-button color="primary" [disabled]="!trackForm.get('tracks')['controls'][0].value">Agregar seguimiento</button>
+                </form>
+              </div>
+            </div>
         </div>
         <div class="task__right-side flex center">
-          <mat-checkbox [checked]="isDone(task)" [disabled]="true"></mat-checkbox>
+          <mat-checkbox [checked]="isDone(task)" [disabled]="readOnly"></mat-checkbox>
         </div>
       </div>
     </div>

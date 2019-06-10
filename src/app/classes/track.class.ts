@@ -5,10 +5,7 @@ export class Track {
   id: string;
   info: string;
   taskId: string;
-  topicId: string;
-  meetingId: string;
   user: User;
-  userName: string;
 
   constructor(track: object) {
     Object.keys(track)
