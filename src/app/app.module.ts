@@ -41,7 +41,7 @@ registerLocaleData(localArg);
     MeetingComponent,
     OpenMeetingComponent,
     ClosedMeetingComponent,
-    TrackComponent
+    TrackComponent,
   ],
   imports: [
     BrowserModule,

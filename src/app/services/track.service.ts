@@ -43,9 +43,10 @@ export class TrackService {
     return new Observable(observer => {
       this.tracks
         .where('meetingId', '==', meetingId)
-          .onSnapshot(data => {
-            observer.next(data.docs);
-          })
+          .orderBy('date', 'desc')
+            .onSnapshot(data => {
+              observer.next(data.docs);
+            })
     })
   }
 }

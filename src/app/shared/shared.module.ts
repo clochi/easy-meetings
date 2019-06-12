@@ -4,9 +4,10 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { MatProgressSpinnerModule } from '@angular/material';
 import { GoBackComponent } from './go-back/go-back.component';
 import { MaterialModule } from '../material/material.module';
+import { MomentPipe } from './pipes/moment.pipe';
 
 @NgModule({
-  declarations: [SpinnerComponent, GoBackComponent],
+  declarations: [SpinnerComponent, GoBackComponent, MomentPipe],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -15,7 +16,8 @@ import { MaterialModule } from '../material/material.module';
   exports: [
     SpinnerComponent,
     GoBackComponent,
-    MaterialModule
+    MaterialModule,
+    MomentPipe
   ]
 })
 export class SharedModule { }

@@ -43,7 +43,7 @@ export class LastMeetingTrackComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.meetingSubscription.unsubscribe();
+    this.meetingSubscription && this.meetingSubscription.unsubscribe();
   }
 
 }
