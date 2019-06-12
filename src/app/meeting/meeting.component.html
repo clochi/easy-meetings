@@ -9,6 +9,6 @@
   </div>
 
   <em-open-meeting *ngIf="meeting?.status" [meeting]="meeting"></em-open-meeting>
-  <em-closed-meeting *ngIf="!meeting?.status" [meeting]="meeting" ></em-closed-meeting>
+  <em-closed-meeting *ngIf="meeting && !meeting?.status" [meeting]="meeting" ></em-closed-meeting>
 
 </div>

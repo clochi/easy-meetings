@@ -12,9 +12,9 @@ import { Subscription } from 'rxjs';
 })
 export class LastMeetingTrackComponent implements OnInit {
   meetingSubscription: Subscription
-  @Input() set meetings(meets){
-    if(meets.length) {
-      this.meeting = this.getLastMeetingClosed(meets);
+  @Input() set meetings(meets) {
+    if(meets.length && (this.meeting = this.getLastMeetingClosed(meets))) {
+      this.isLoading = true;
       this.meetingSubscription = this.meetingService.getMeeting(this.meeting.id)
         .subscribe(meeting => this.ngZone.run(() => {
           this.meeting = meeting;
@@ -25,7 +25,7 @@ export class LastMeetingTrackComponent implements OnInit {
   
   meeting: Meeting;
   tasks: Task[] = [];
-  isLoading = true;
+  isLoading = false;
   constructor(
     private meetingService: MeetingService,
     private ngZone: NgZone) { }
@@ -34,10 +34,12 @@ export class LastMeetingTrackComponent implements OnInit {
   }
 
   getLastMeetingClosed(meetings) {
-    const datesList = meetings.map(meeting => moment(meeting.date));
+    const datesList = meetings
+      .filter(meeting => !meeting.status)
+        .map(meeting => moment(meeting.date));
     const mayorDate = moment.max(datesList);
     return meetings
-      .find(meeting => moment(mayorDate).isSame(moment(meeting.date)) && !meeting.status)
+      .find(meeting => moment(mayorDate).isSame(moment(meeting.date)))
   }
 
   ngOnDestroy() {

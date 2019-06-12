@@ -44,4 +44,9 @@ export class TaskService {
     })
     return taskBatch.commit();
   }
+
+  updateTask(taskId, status) {
+    return this.tasks.doc(taskId)
+      .update({status: status ? '3' : '1'})
+  }
 }

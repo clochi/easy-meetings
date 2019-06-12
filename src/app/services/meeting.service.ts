@@ -44,9 +44,6 @@ export class MeetingService {
 
   getMeeting(id: string): Observable<Meeting> {
     let returnMeeting: Meeting;
-    let tasks: Task[] = [];
-    let tracks: Track[] = [];
-
     return new Observable(observer => {
       this.meetings.doc(id).onSnapshot(meeting => {
         if(!meeting.data()) {
@@ -61,11 +58,13 @@ export class MeetingService {
             });
             this.taskService.getAllTasksInMeeting(id)
               .subscribe(tasksData => {
+                const tasks: Task[] = [];
                 tasksData.forEach(task => {
                   tasks.push(new Task(task.data() as Task))
                 });
-                this.trackService.getTracksByTask(id)
+                this.trackService.getAllTracksByMeeting(id)
                   .subscribe(tracksData => {
+                    const tracks: Track[] = [];
                     tracksData.forEach(track => {
                       tracks.push(new Track(track.data() as Track))
                     });

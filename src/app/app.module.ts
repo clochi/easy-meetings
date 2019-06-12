@@ -25,6 +25,7 @@ import { NextMeetingsComponent } from './next-meetings/next-meetings.component';
 import { MeetingComponent } from './meeting/meeting.component';
 import { OpenMeetingComponent } from './open-meeting/open-meeting.component';
 import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.component';
+import { TrackComponent } from './track/track.component';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -39,7 +40,8 @@ registerLocaleData(localArg);
     NextMeetingsComponent,
     MeetingComponent,
     OpenMeetingComponent,
-    ClosedMeetingComponent
+    ClosedMeetingComponent,
+    TrackComponent
   ],
   imports: [
     BrowserModule,
