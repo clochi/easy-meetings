@@ -29,8 +29,7 @@ export class MeetingFormComponent implements OnInit {
       date: new FormControl(null, Validators.required),
       time: new FormControl(null, Validators.required),
       topics: new FormArray([]),
-      place: new FormControl(null, Validators.required),
-      users: new FormControl(null, Validators.required)
+      place: new FormControl(null, Validators.required)
     })
     this.topicsControl = (<FormArray>this.meetingForm.get('topics'));
     this.addTopic();
@@ -41,7 +40,7 @@ export class MeetingFormComponent implements OnInit {
   }
 
   enterPressed(e: KeyboardEvent) {
-    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13) ) {
+    if((<any>e.currentTarget).value && (e.keyCode == 13 || e.which == 13)) {
       (<any>e.currentTarget).disabled = true;
       this.addTopic();
       setTimeout(() => {
@@ -53,7 +52,7 @@ export class MeetingFormComponent implements OnInit {
   }
 
   haveTopic() {
-       return this.topicsControl.controls[0].value != '';
+       return !!this.topicsControl.controls[0].value;
   }
 
   removeTopic(index) {
@@ -93,7 +92,6 @@ export class MeetingFormComponent implements OnInit {
       date: form.date.value,
       place: form.place.value,
       time: form.time.value,
-      users: form.users.value
     } as Meeting
     this.meeting = new Meeting(formData);
   }

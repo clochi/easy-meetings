@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, QueryDocumentSnapshot, DocumentData } from '@angular/fire/firestore';
 import { UserService } from './user.service';
 import { Topic } from '../classes/topic.class';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +11,26 @@ export class TopicService {
 
   constructor(
     private firestore: AngularFirestore,
-    private userService: UserService) { }
+  ) { }
+
+  getTopics(meetingId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
+    return new Observable(observer => {
+      this.firestore.firestore.collection('topics')
+        .where('meetingId', '==', meetingId)
+          .onSnapshot(data => {
+            observer.next(data.docs);
+          })
+    })
+  }
 
   saveTopics(topics: Topic[]) {
-    const meetingId = topics[0].meetingId;
-    const topicsParsed = [];
+    const topicBatch = this.firestore.firestore.batch();
     topics.forEach(topic => {
       topic.id = this.firestore.createId();
-      topicsParsed.push(topic.toPlain());
+      const newDoc = this.firestore.collection('topics')
+        .doc(topic.id).ref;
+      topicBatch.set(newDoc, topic.toPlain())
     });
-    return this.firestore.collection('topics')
-      .doc(meetingId)
-        .set({meetingId, topics: topicsParsed})
+    return topicBatch.commit()
   }
 }

@@ -12,7 +12,7 @@ export class SpinnerComponent implements OnInit {
   constructor(private spinner: ElementRef) { }
 
   ngOnInit() {
-    if(!this.hasOwnProperty('fullScreen')) {
+    if(this.fullScreen !== undefined) {
       (<HTMLElement>this.spinner.nativeElement)
         .parentElement.style.position = 'relative';
     }
@@ -20,7 +20,7 @@ export class SpinnerComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if(!this.hasOwnProperty('fullScreen')){
+    if(this.fullScreen !== undefined){
       (<HTMLElement>this.spinner.nativeElement)
         .parentElement.style.position = 'initial';
     }

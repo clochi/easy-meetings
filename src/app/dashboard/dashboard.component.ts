@@ -1,8 +1,9 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { MeetingFormComponent } from '../meeting-form/meeting-form.component';
-import { HttpClient } from '@angular/common/http';
-import { meetings } from '../meeting-form/meeting.mock';
+import { MeetingService } from '../services/meeting.service';
+import { Meeting } from '../classes/meeting.class';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'em-dashboard',
@@ -12,14 +13,19 @@ import { meetings } from '../meeting-form/meeting.mock';
 export class DashboardComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
-    private http: HttpClient,
-    private ngZone: NgZone) {}
+    private ngZone: NgZone,
+    private meetingService: MeetingService) {}
   title = 'easy-meetings';
   isLoading = false;
-  meetings: any;
+  meetings: Meeting[] = [];
   dialogRef;
+  meetingSubscription: Subscription;
+
   ngOnInit() {
-    this.meetings = meetings;
+    this.meetingSubscription = this.meetingService.getAllMeetings()
+      .subscribe(meetings => {
+        this.ngZone.run(() => this.meetings = meetings)
+      })
   }
 
   createMeeting() {
@@ -27,4 +33,9 @@ export class DashboardComponent implements OnInit {
       width: '600px'
     }));
   }
+
+  onDesetroy() {
+    this.meetingSubscription.unsubscribe();
+  }
+
 }

@@ -1,0 +1,4 @@
+<div class="track" *ngIf="track">
+  <div class="track__author-date">{{track.date | moment:'fromNow'}}, por {{track.user.name}}</div>
+  <div class="track__info">{{track.info}}</div>
+</div>

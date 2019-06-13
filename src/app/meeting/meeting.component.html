@@ -1,0 +1,14 @@
+<div class="meeting">
+  <em-spinner
+    fullScreen
+    [isLoading]="isLoading">
+  </em-spinner>
+  
+  <div *ngIf="!meeting && !isLoading">
+    <span>Esta reunión no existe</span><span><em-go-back></em-go-back></span>
+  </div>
+
+  <em-open-meeting *ngIf="meeting?.status" [meeting]="meeting"></em-open-meeting>
+  <em-closed-meeting *ngIf="meeting && !meeting?.status" [meeting]="meeting" ></em-closed-meeting>
+
+</div>

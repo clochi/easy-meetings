@@ -1,5 +1,19 @@
 <div class="last-meeting-track">
-    <div *ngFor="let topic of meeting?.topics">
-      <em-topic [topic]="topic"></em-topic>
-    </div>
+  <em-spinner
+    [isLoading]="isLoading">
+  </em-spinner>
+  <p *ngIf="!isLoading && !meeting?.id">No hay reuniónes finalizadas</p>
+  <div *ngIf="meeting?.id">
+    <ul class="captions">
+      <li><div class="success-icon"></div>Lo que se hizo</li>
+      <li><div class="fail-icon"></div>Lo que no se hizo</li>
+    </ul>
+    <!-- <a routerLink="/app/meetings/{{meeting?.id}}">Ir a reunión</a> -->
+    <ng-container *ngIf="meeting?.topics.length">
+      <div *ngFor="let topic of meeting?.topics">
+        <em-topic [topic]="topic"></em-topic>
+      </div>
+      <p>{{meeting.nextTopics}}</p>
+    </ng-container>
   </div>
+</div>

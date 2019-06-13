@@ -3,12 +3,13 @@ import { Topic } from './topic.class';
 export class Meeting {
   date: Date;
   id: string;
+  groupId: string;
   owner: string;
   place: string;
   status: boolean = true;
   time: Date;
-  topics?: Topic[];
-  users: string; //This is going to be User type
+  nextTopics?: string;
+  topics?: Topic[] = [];
 
   constructor(meeting: Meeting) {
     Object.keys(meeting)

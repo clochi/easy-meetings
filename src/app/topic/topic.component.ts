@@ -16,7 +16,7 @@ export class TopicComponent implements OnInit {
   }
 
   isDone(tasks: Task[]) {
-    return tasks.every(task => task.status === TaskStatus.finnished);
+    return tasks.every(task => task.status == TaskStatus.finnished);
   }
 
   toggle() {

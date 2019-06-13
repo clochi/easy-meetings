@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './material/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
@@ -21,9 +20,12 @@ import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { UserService } from './services/user.service';
 import { SharedModule } from './shared/shared.module';
 import { NextMeetingsComponent } from './next-meetings/next-meetings.component';
+import { MeetingComponent } from './meeting/meeting.component';
+import { OpenMeetingComponent } from './open-meeting/open-meeting.component';
+import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.component';
+import { TrackComponent } from './track/track.component';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -35,7 +37,11 @@ registerLocaleData(localArg);
     TopicComponent,
     TaskComponent,
     DashboardComponent,
-    NextMeetingsComponent
+    NextMeetingsComponent,
+    MeetingComponent,
+    OpenMeetingComponent,
+    ClosedMeetingComponent,
+    TrackComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,14 +50,12 @@ registerLocaleData(localArg);
     AngularFirestoreModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule
   ],
   providers: [
     isLogged,
-    UserService,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
     },

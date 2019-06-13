@@ -29,13 +29,6 @@
               placeholder="Lugar"
               formControlName="place">
           </mat-form-field>
-          <mat-form-field 
-          class="meeting__input">
-            <input
-              matInput
-              placeholder="Asistentes"
-              formControlName="users">
-          </mat-form-field>
           <div class="topics" formArrayName="topics">
             <mat-form-field 
               class="meeting__input-container"
@@ -54,11 +47,11 @@
                   *ngIf="meetingForm.get('topics')['controls'][i].value != ''">delete</mat-icon>
               </mat-form-field>
           </div>
-          <mat-dialog-actions class="flex around">
-            <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
-            <button mat-raised-button color="primary" [disabled]="!meetingForm.valid || !haveTopic() || isSending">Crear reunión</button>
-          </mat-dialog-actions>
         </form>
-    </mat-dialog-content>
+      </mat-dialog-content>
+      <mat-dialog-actions class="flex around">
+        <button mat-raised-button color="warn" [mat-dialog-close]="true">Cancelar</button>
+        <button mat-raised-button color="primary" [disabled]="!meetingForm.valid || !haveTopic() || isSending">Crear reunión</button>
+      </mat-dialog-actions>
   </div>
 </div>
