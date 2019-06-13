@@ -10,7 +10,6 @@ export class Meeting {
   time: Date;
   nextTopics?: string;
   topics?: Topic[] = [];
-  users: string; //This is going to be User type
 
   constructor(meeting: Meeting) {
     Object.keys(meeting)

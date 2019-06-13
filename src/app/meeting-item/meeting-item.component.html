@@ -1,6 +1,6 @@
 <div class="meeting-item">
   <div class="meeting-item__row flex around">
-    <div>{{meeting.date | date:'EEEE d, MMMM, yyyy'}}</div>
+    <div>{{meeting.date | moment:'fromNow'}}</div>
     <div>{{meeting.time}}</div>
     <div>{{meeting.place}}</div>
     <div>{{meeting.users}}</div>
