@@ -29,8 +29,7 @@ export class LoginComponent implements OnInit {
       user: form.value.user,
       password: form.value.password
     }
-    this.loginService.loginUser(loginInfo)
-      .then(() => this.sendingData = false)
+    this.loginService.loginUser(loginInfo);
   }
 
   ngOnInit() {
@@ -42,6 +41,7 @@ export class LoginComponent implements OnInit {
 
   ngOnDestroy() {
     this.loginSubscription.unsubscribe();
+    this.sendingData = false
   }
 
 }
