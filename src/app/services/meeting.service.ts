@@ -88,9 +88,9 @@ export class MeetingService {
         .onSnapshot(data => {
           const meetingList: Meeting[] = [];
           data.docs.forEach(meeting => {
-            if (moment((<Meeting>meeting.data()).date).isSameOrAfter(moment())) {
+            // if (moment((<Meeting>meeting.data()).date).isSameOrAfter(moment())) {
               meetingList.push( new Meeting(meeting.data() as Meeting) );
-            }
+            // }
           })
           observer.next(meetingList);
         })

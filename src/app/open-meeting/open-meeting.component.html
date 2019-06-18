@@ -1,28 +1,29 @@
-<div *ngIf="meeting" class="meeting-info">
-  <h2>Detalles de reunión</h2>
-  <p>Fecha {{meeting.date | date:short}}</p>
-  <div class="meeting_topics">
-    <h3>Temas a tratar</h3>
+<div *ngIf="meeting" class="open-meeting">
+  <h2 class="open-meeting__title">Detalles de reunión</h2>
+  <p class="open-meeting__date">Fecha {{meeting.date | date:'shortDate'}}</p>
+  <div class="open-meeting__topics">
+    <h4>Temas a tratar</h4>
     <form (keydown.enter)="$event.preventDefault()" [formGroup]="taskForm">
-      <div class="meeting__topic" *ngFor="let topic of meeting.topics">
-        <p>{{topic.topic}}</p>
+      <div class="open-meeting__topic-container" *ngFor="let topic of meeting.topics; let number = index">
+        <p class="open-meeting__topic">{{number + 1}}) {{topic.topic}}</p>
         <div class="{{topic.id}}" formArrayName="{{topic.id}}">
           <div *ngFor="let topicItem of taskForm.get(topic.id)['controls']; let i = index">
-            <div [formGroupName]="i">
+            <div class="open-meeting__topic-row" [formGroupName]="i">
                 <mat-form-field 
-                  class="meeting__input-container">
+                  class="open-meeting__input-container">
                     <input
                       minlength="1"
-                      class="meeting__input"
+                      class="open-meeting__input"
                       [attr.data-input]="topic.id+i"
                       matInput
                       placeholder="Agregar tarea"
                       formControlName="task">
                 </mat-form-field>
                 <mat-form-field 
-                  class="meeting__input-container">
+                  class="open-meeting__input-container">
                     <mat-label>Asignar a usuario</mat-label>
                     <mat-select 
+                      class="open-meeting__input"
                       (selectionChange)="userSelected(index, topic.id)"
                       formControlName="user">
                       <mat-option *ngFor="let user of userList" [value]="user">
@@ -30,23 +31,25 @@
                       </mat-option>
                     </mat-select>
                 </mat-form-field>
+                <mat-icon 
+                  (click)="removeTask(i, topic.id)"
+                  class="open-meeting__remove-task"
+                  aria-label="Remove button"
+                  >delete</mat-icon>
             </div>
-            <mat-icon 
-            (click)="removeTask(i, topic.id)"
-            class="meeting__remove"
-            aria-label="Remove button"
-            >delete</mat-icon>
           </div>
         </div>
       </div>
-      <mat-form-field>
+      <mat-form-field class="open-meeting__next-meeting">
           <textarea
-            class="meeting__input"
+            class="open-meeting__next-meeting-input"
             matInput
             placeholder="Para la proxima reunión"
             formControlName="nextMeeting"></textarea>
       </mat-form-field>
-      <button mat-raised-button color="primary" [disabled]="!taskForm.valid" (click)="finishMeeting()">Finalizar reunión</button>
+      <div class="open-meeting__button-container">
+        <button class="open-meeting__finish-meeting" mat-raised-button color="primary" [disabled]="!taskForm.valid" (click)="finishMeeting()">Finalizar reunión</button>
+      </div>
     </form>
   </div>
 </div>
