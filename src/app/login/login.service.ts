@@ -19,6 +19,17 @@ export class LoginService {
       .catch(err => alert('No se pudo logear ' + err));
   }
 
+  registerUser(login) {
+    return this.authFire.auth.createUserWithEmailAndPassword(login.email, login.password)
+      .then(user => {
+        login.id = user.user.uid;
+        login.groups = [];
+        login.activeGroup = null;
+        delete login.password;
+        return this.userService.saveUser(login);
+      })
+  }
+
   isLogged(): Observable<boolean>{
     return new Observable(observer => {
       this.authFire.auth.onAuthStateChanged( user => {

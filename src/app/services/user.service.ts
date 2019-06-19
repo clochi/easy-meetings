@@ -24,4 +24,11 @@ export class UserService {
     }) 
   }
 
+  saveUser(user) {
+    this._userInfo = new User(user);
+    return this.firestore.collection('users')
+      .doc(user.id)
+        .set(user)
+  }
+
 }

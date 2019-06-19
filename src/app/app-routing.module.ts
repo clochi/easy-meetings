@@ -3,11 +3,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { isLogged } from './guards/login-guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MeetingComponent } from './meeting/meeting.component';
+import { HasActiveGroup } from './guards/has-group';
 
 const routes: Routes = [
   { path: '', loadChildren: './login/login.module#LoginModule'},
-  { path: 'app', component: DashboardComponent, canActivate: [isLogged]},
-  { path: 'app/meetings/:id', component: MeetingComponent, canActivate: [isLogged] }
+  { path: 'app', component: DashboardComponent, canActivate: [isLogged, HasActiveGroup]},
+  { path: 'app/meetings/:id', component: MeetingComponent, canActivate: [isLogged, HasActiveGroup] }
 ];
 
 @NgModule({

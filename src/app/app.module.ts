@@ -26,6 +26,7 @@ import { MeetingComponent } from './meeting/meeting.component';
 import { OpenMeetingComponent } from './open-meeting/open-meeting.component';
 import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.component';
 import { TrackComponent } from './track/track.component';
+import { HasActiveGroup } from './guards/has-group';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -56,6 +57,7 @@ registerLocaleData(localArg);
   ],
   providers: [
     isLogged,
+    HasActiveGroup,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
     },

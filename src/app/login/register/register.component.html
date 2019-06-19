@@ -5,7 +5,7 @@
   <div class="login__form">
     <mat-card class="login__card">
       <mat-card-header class="flex center">
-        <mat-card-title>Ingrese sus credenciales</mat-card-title>
+        <mat-card-title>Registrarse</mat-card-title>
       </mat-card-header>
       <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm" novalidate>
         <mat-card-content>
@@ -13,10 +13,20 @@
             class="login__input">
             <input
               matInput
-              placeholder="Usuario"
-              name="user"
+              placeholder="Nombre"
+              name="name"
               required
-              [(ngModel)]="login.user">
+              [(ngModel)]="login.name">
+          </mat-form-field>
+          <mat-form-field 
+            class="login__input">
+            <input
+              matInput
+              type="email"
+              placeholder="Email"
+              name="email"
+              required
+              [(ngModel)]="login.email">
           </mat-form-field>
           <mat-form-field 
             class="login__input">
@@ -30,8 +40,8 @@
           </mat-form-field>
         </mat-card-content>
         <mat-card-actions align="center">
-          <p>No tiene un usuario, <a routerLink="/register">Registrese</a></p>
-            <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid || sendingData">Iniciar sesión</button>
+          <p>¿Ya tienes una cuenta? <a routerLink="/">Ingresar</a></p>
+            <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid || sendingData">Registrarse</button>
         </mat-card-actions>
       </form>
     </mat-card>
