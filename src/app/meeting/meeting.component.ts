@@ -19,6 +19,7 @@ export class MeetingComponent implements OnInit {
   ) { }
 
   paramSubscription: Subscription;
+  meetingServiceSubscription: Subscription;
   meeting: Meeting;
   isLoading = false;
 
@@ -26,7 +27,7 @@ export class MeetingComponent implements OnInit {
     this.isLoading = true;
     this.paramSubscription = this.activeRoute.params
       .subscribe(param => {
-        this.meetingService.getMeeting(param.id)
+        this.meetingServiceSubscription = this.meetingService.getMeeting(param.id)
           .subscribe(data => {
             this.ngZone.run(() => {
               this.isLoading = false;
@@ -38,6 +39,7 @@ export class MeetingComponent implements OnInit {
 
   ngOnDestroy() {
     this.paramSubscription.unsubscribe();
+    this.meetingServiceSubscription.unsubscribe();
   }
 
 }

@@ -12,6 +12,9 @@ export class UserService {
   get userInfo(): User {
     return this._userInfo;
   }
+  set userInfo(value) {
+    this._userInfo = value;
+  }
   constructor(private firestore: AngularFirestore) { }
 
   getUserInfo(id) {

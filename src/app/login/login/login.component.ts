@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'em-login',
@@ -21,7 +22,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private loginService: LoginService,
     private ngZone: NgZone,
-    private router: Router) { }
+    private router: Router,
+    private userService: UserService) { }
 
   onSubmit(form: NgForm) {
     this.sendingData = true;
@@ -29,7 +31,14 @@ export class LoginComponent implements OnInit {
       user: form.value.user,
       password: form.value.password
     }
-    this.loginService.loginUser(loginInfo);
+    this.loginService.loginUser(loginInfo)
+    .then(value => {
+      this.userService.getUserInfo(value.user.uid);
+    })
+    .catch(err => {
+      alert('No se pudo logear ' + err);
+      this.sendingData = false;
+    });
   }
 
   ngOnInit() {

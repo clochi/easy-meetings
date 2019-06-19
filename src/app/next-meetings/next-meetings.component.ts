@@ -36,7 +36,7 @@ export class NextMeetingsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.nextMeetingSubscription.unsubscribe();
+    this.nextMeetingSubscription && this.nextMeetingSubscription.unsubscribe();
   }
 
 }
