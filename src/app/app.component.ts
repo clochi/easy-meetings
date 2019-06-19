@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   get showToolbar() {
-    return this.router.url !== '/';
+    return this.router.url !== '/' && this.router.url !== '/register';
   }
   constructor(
     private loginService: LoginService,

@@ -11,9 +11,10 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { LoginService } from './login.service';
 import { RedirectLoggedDashboard } from '../guards/redirect-logged-dashboard';
 import { SharedModule } from '../shared/shared.module';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [LoginComponent, RegisterComponent],
   imports: [
     CommonModule,
     LoginRoutingModule,
