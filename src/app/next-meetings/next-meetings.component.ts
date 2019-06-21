@@ -1,8 +1,9 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'em-next-meetings',
@@ -16,7 +17,6 @@ export class NextMeetingsComponent implements OnInit {
   isLoading = false;
   constructor(
     private meetingService: MeetingService,
-    private ngZone: NgZone,
     private router: Router
   ) { }
 
@@ -24,10 +24,9 @@ export class NextMeetingsComponent implements OnInit {
     this.isLoading = true;
     this.nextMeetingSubscription = this.meetingService.getNextMeetings()
       .subscribe(meetings => {
-        this.ngZone.run(() => {
-          this.meetings = meetings;
-          this.isLoading = false;
-        })
+        this.meetings = meetings.map(meeting => new Meeting(meeting));
+          //.filter(meeting => moment(meeting.date).isSameOrAfter(moment()))
+        this.isLoading = false;
       })
   }
   

@@ -3,6 +3,7 @@ import { AngularFirestore, QueryDocumentSnapshot, DocumentData } from '@angular/
 import { Task } from '../classes/task.class';
 import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -24,14 +25,13 @@ export class TaskService {
     })
   }
 
-  getAllTasksInMeeting(meetingId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.tasks
-        .where('meetingId', '==', meetingId)
-          .onSnapshot(data => {
-            observer.next(data.docs);
-          })
-    })
+  getAllTasksInMeeting(meetingId: string): Observable<Task[]> {
+    return this.firestore
+      .collection('tasks', ref => ref.where('meetingId', '==', meetingId))
+        .valueChanges()
+          .pipe(map(tasks => tasks
+              .map(task => new Task(task as Task))
+              ))
   }
 
   saveTasks(tasks: Task[]) {

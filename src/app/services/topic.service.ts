@@ -3,6 +3,7 @@ import { AngularFirestore, QueryDocumentSnapshot, DocumentData } from '@angular/
 import { UserService } from './user.service';
 import { Topic } from '../classes/topic.class';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,13 @@ export class TopicService {
     private firestore: AngularFirestore,
   ) { }
 
-  getTopics(meetingId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.firestore.firestore.collection('topics')
-        .where('meetingId', '==', meetingId)
-          .onSnapshot(data => {
-            observer.next(data.docs);
-          })
-    })
+  getTopics(meetingId: string): Observable<Topic[]> {
+    return this.firestore
+      .collection('topics', ref => ref.where('meetingId', '==', meetingId))
+        .valueChanges()
+          .pipe(map(topics => topics
+              .map(topic => new Topic(topic as Topic))
+              ))
   }
 
   saveTopics(topics: Topic[]) {
