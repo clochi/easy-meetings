@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onDesetroy() {
-    this.meetingSubscription.unsubscribe();
+    this.meetingSubscription && this.meetingSubscription.unsubscribe();
   }
 
 }

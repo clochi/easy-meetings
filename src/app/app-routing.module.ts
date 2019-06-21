@@ -8,7 +8,8 @@ import { HasActiveGroup } from './guards/has-group';
 const routes: Routes = [
   { path: '', loadChildren: './login/login.module#LoginModule'},
   { path: 'app', component: DashboardComponent, canActivate: [isLogged, HasActiveGroup]},
-  { path: 'app/meetings/:id', component: MeetingComponent, canActivate: [isLogged, HasActiveGroup] }
+  { path: 'app/meetings/:id', component: MeetingComponent, canActivate: [isLogged, HasActiveGroup] },
+  { path: 'app/groups', loadChildren: './groups/groups.module#GroupsModule', canActivate: [isLogged] }
 ];
 
 @NgModule({

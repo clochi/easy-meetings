@@ -15,14 +15,14 @@ export class HasActiveGroup implements CanActivate {
     private userService: UserService) {}
   
   canActivate() {
-    if(!this.userService.userInfo.activeGroup) {
-      //this.router.navigate(['no-group']);
+    if(!this.userService.userInfo) {
+      this.router.navigate(['/']);
       return false;
     }
-    return true;
-  }
-
-  hasActiveGroup() {
-    
+    if(this.userService.userInfo.activeGroup){
+      return true;
+    }
+    this.router.navigate(['app/groups/no-group']);
+    return false;
   }
 }
