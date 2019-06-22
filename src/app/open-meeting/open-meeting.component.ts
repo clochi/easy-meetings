@@ -88,7 +88,6 @@ export class OpenMeetingComponent implements OnInit {
           .update({status: false})
             .then(() => alert('La reunión se guardó correctamente'));
       })
-    debugger
   }
 
   extractFormData() {
@@ -125,5 +124,9 @@ export class OpenMeetingComponent implements OnInit {
           });
         }
       })
+  }
+
+  ngOnDestroy() {
+    this.userListSubscription.unsubscribe();
   }
 }

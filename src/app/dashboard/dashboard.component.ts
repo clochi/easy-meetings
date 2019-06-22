@@ -4,6 +4,7 @@ import { MeetingFormComponent } from '../meeting-form/meeting-form.component';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators'
 
 @Component({
   selector: 'em-dashboard',
@@ -24,7 +25,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.meetingSubscription = this.meetingService.getAllMeetings()
       .subscribe(meetings => {
-        this.ngZone.run(() => this.meetings = meetings)
+        this.meetings = meetings;
       })
   }
 
@@ -34,7 +35,7 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
-  onDesetroy() {
+  ngOnDestroy() {
     this.meetingSubscription && this.meetingSubscription.unsubscribe();
   }
 

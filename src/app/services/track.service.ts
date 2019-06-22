@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Track } from '../classes/track.class';
 import { UserService } from './user.service';
 import { User } from '../classes/user.class';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -39,14 +40,13 @@ export class TrackService {
     })
   }
 
-  getAllTracksByMeeting(meetingId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.tracks
-        .where('meetingId', '==', meetingId)
-          .orderBy('date', 'desc')
-            .onSnapshot(data => {
-              observer.next(data.docs);
-            })
-    })
+  getAllTracksByMeeting(meetingId: string): Observable<Track[]> {
+    return this.firestore
+      .collection('tracks', ref => ref.where('meetingId', '==', meetingId)
+        .orderBy('date', 'desc'))
+          .valueChanges()
+            .pipe(map(tracks => tracks
+              .map(track => new Track(track as Track))
+              ))
   }
 }

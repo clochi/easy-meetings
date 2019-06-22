@@ -13,6 +13,10 @@ export class isLogged implements CanActivate {
     private router: Router) {}
   
   canActivate() {
-    return this.loginService.isLogged();
+    if(!this.loginService.isLogged()) {
+      this.router.navigate(['/']);
+      return false;
+    }
+    return true;
   }
 }

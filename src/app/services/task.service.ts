@@ -3,35 +3,35 @@ import { AngularFirestore, QueryDocumentSnapshot, DocumentData } from '@angular/
 import { Task } from '../classes/task.class';
 import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
   get tasks() {
-    return this.firestore.firestore.collection('tasks');
+    return this.firestore.collection('tasks');
   }
   constructor(private firestore: AngularFirestore) { }
 
-  getTasks(meetingId: string, topicId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.tasks
-        .where('meetingId', '==', meetingId)
-          .where('topicId', '==', topicId)
-            .onSnapshot(data => {
-              observer.next(data.docs);
-            })
-    })
-  }
+  // getTasks(meetingId: string, topicId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
+  //   return new Observable(observer => {
+  //     this.tasks
+  //       .where('meetingId', '==', meetingId)
+  //         .where('topicId', '==', topicId)
+  //           .onSnapshot(data => {
+  //             observer.next(data.docs);
+  //           })
+  //   })
+  // }
 
-  getAllTasksInMeeting(meetingId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.tasks
-        .where('meetingId', '==', meetingId)
-          .onSnapshot(data => {
-            observer.next(data.docs);
-          })
-    })
+  getAllTasksInMeeting(meetingId: string): Observable<Task[]> {
+    return this.firestore
+      .collection('tasks', ref => ref.where('meetingId', '==', meetingId))
+        .valueChanges()
+          .pipe(map(tasks => tasks
+              .map(task => new Task(task as Task))
+              ))
   }
 
   saveTasks(tasks: Task[]) {
@@ -46,7 +46,7 @@ export class TaskService {
   }
 
   updateTask(taskId, status) {
-    return this.tasks.doc(taskId)
+    return this.tasks.doc(taskId).ref
       .update({status: status ? '3' : '1'})
   }
 }
