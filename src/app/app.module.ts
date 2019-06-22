@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule, LOCALE_ID, APP_INITIALIZER } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material';
@@ -27,6 +27,9 @@ import { OpenMeetingComponent } from './open-meeting/open-meeting.component';
 import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.component';
 import { TrackComponent } from './track/track.component';
 import { HasActiveGroup } from './guards/has-group';
+import { initializeApp } from 'firebase';
+import { LoginService } from './login/login.service';
+import { RedirectLoggedDashboard } from './guards/redirect-logged-dashboard';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -58,8 +61,15 @@ registerLocaleData(localArg);
   providers: [
     isLogged,
     HasActiveGroup,
+    RedirectLoggedDashboard,
     {
       provide: MAT_DATE_LOCALE, useValue: 'es-ES'
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initialize,
+      deps: [ LoginService ],
+      multi: true
     },
     {provide: LOCALE_ID, useValue: 'es-AR'},
     {provide: LocationStrategy, useClass: HashLocationStrategy}
@@ -68,3 +78,7 @@ registerLocaleData(localArg);
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function initialize(loginService: LoginService) {
+  return () => loginService.initializeUser();
+}

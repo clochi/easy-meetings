@@ -14,10 +14,7 @@ export class RedirectLoggedDashboard implements CanActivate {
         private ngZone: NgZone) {}
         
     canActivate() {
-        this.loginService.isLogged()
-            .subscribe(user => {
-                if(user) { this.ngZone.run(() => this.router.navigate(['/app'])) };
-            })
+        this.loginService.isLogged() && this.router.navigate(['/app']);
         return true;  
     }
 }

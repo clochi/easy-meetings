@@ -42,10 +42,11 @@ export class TrackService {
 
   getAllTracksByMeeting(meetingId: string): Observable<Track[]> {
     return this.firestore
-      .collection('tracks', ref => ref.where('meetingId', '==', meetingId))
-        .valueChanges()
-          .pipe(map(tracks => tracks
-            .map(track => new Track(track as Track))
-            ))
+      .collection('tracks', ref => ref.where('meetingId', '==', meetingId)
+        .orderBy('date', 'desc'))
+          .valueChanges()
+            .pipe(map(tracks => tracks
+              .map(track => new Track(track as Track))
+              ))
   }
 }

@@ -4,13 +4,13 @@ import { UserService } from './user.service';
 import { TopicService } from './topic.service';
 import { TaskService } from './task.service';
 import { Meeting } from '../classes/meeting.class';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { Topic } from '../classes/topic.class';
 import { Task } from '../classes/task.class';
 import { TrackService } from './track.service';
 import { Track } from '../classes/track.class';
 import * as moment from 'moment';
-import { map } from 'rxjs/operators';
+import { map, reduce } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -41,51 +41,23 @@ export class MeetingService {
   }
 
   getMeeting(id: string) {
-    const meeting = this.firestore.collection(this.meetings).doc(id).valueChanges();
-    const topics = this.topicService.getTopics(id);
-    const tasks = this.taskService.getAllTasksInMeeting(id);
-    const tracks = this.trackService.getAllTracksByMeeting(id);
+    const meeting$ = this.firestore.collection(this.meetings).doc(id).valueChanges() as Observable<Meeting>;
+    const topics$ = this.topicService.getTopics(id) as Observable<Topic[]>;
+    const tasks$ = this.taskService.getAllTasksInMeeting(id) as Observable<Task[]>;
+    const tracks$ = this.trackService.getAllTracksByMeeting(id) as Observable<Track[]>;
+    return combineLatest(meeting$, topics$, tasks$, tracks$)
+      .pipe(map(data => {
+        const meeting= new Meeting(data[0]);
+        meeting.topics = data[1];
+        meeting.topics.forEach(topic => {
+          topic.tasks = data[2].filter(task => task.topicId === topic.id);
+          topic.tasks.forEach(task => {
+            task.tracks = data[3].filter(track => track.taskId === task.id)
+          })
+        })
+        return meeting;
+      }))
   }
-
-  // getMeeting(id: string): Observable<Meeting> {
-  //   let returnMeeting: Meeting;
-  //   return new Observable(observer => {
-  //     this.meetings.doc(id).onSnapshot(meeting => {
-  //       if(!meeting.data()) {
-  //         observer.next(returnMeeting);
-  //         return;
-  //       };
-  //       returnMeeting = new Meeting(meeting.data() as Meeting);
-  //       this.topicService.getTopics(meeting.id)
-  //         .subscribe(topics => {
-  //           topics.forEach(topic => {
-  //             returnMeeting.topics.push(new Topic(topic.data() as Topic));
-  //           });
-  //           this.taskService.getAllTasksInMeeting(id)
-  //             .subscribe(tasksData => {
-  //               const tasks: Task[] = [];
-  //               tasksData.forEach(task => {
-  //                 tasks.push(new Task(task.data() as Task))
-  //               });
-  //               this.trackService.getAllTracksByMeeting(id)
-  //                 .subscribe(tracksData => {
-  //                   const tracks: Track[] = [];
-  //                   tracksData.forEach(track => {
-  //                     tracks.push(new Track(track.data() as Track))
-  //                   });
-  //                   returnMeeting.topics.forEach(topic => {
-  //                     topic.tasks = tasks.filter(task => task.topicId == topic.id);
-  //                     topic.tasks.forEach(task => {
-  //                       task.tracks = tracks.filter(track => track.taskId == task.id)
-  //                     });
-  //                   });
-  //                   observer.next(returnMeeting);
-  //                 });
-  //             });
-  //         });
-  //     });
-  //   });
-  // }
 
   getNextMeetings(): Observable<any[]>{
     return this.firestore

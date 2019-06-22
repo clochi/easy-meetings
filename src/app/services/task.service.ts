@@ -10,20 +10,20 @@ import { map } from 'rxjs/operators';
 })
 export class TaskService {
   get tasks() {
-    return this.firestore.firestore.collection('tasks');
+    return this.firestore.collection('tasks');
   }
   constructor(private firestore: AngularFirestore) { }
 
-  getTasks(meetingId: string, topicId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
-    return new Observable(observer => {
-      this.tasks
-        .where('meetingId', '==', meetingId)
-          .where('topicId', '==', topicId)
-            .onSnapshot(data => {
-              observer.next(data.docs);
-            })
-    })
-  }
+  // getTasks(meetingId: string, topicId: string): Observable<QueryDocumentSnapshot<DocumentData>[]> {
+  //   return new Observable(observer => {
+  //     this.tasks
+  //       .where('meetingId', '==', meetingId)
+  //         .where('topicId', '==', topicId)
+  //           .onSnapshot(data => {
+  //             observer.next(data.docs);
+  //           })
+  //   })
+  // }
 
   getAllTasksInMeeting(meetingId: string): Observable<Task[]> {
     return this.firestore
@@ -46,7 +46,7 @@ export class TaskService {
   }
 
   updateTask(taskId, status) {
-    return this.tasks.doc(taskId)
+    return this.tasks.doc(taskId).ref
       .update({status: status ? '3' : '1'})
   }
 }

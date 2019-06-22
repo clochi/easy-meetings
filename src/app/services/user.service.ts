@@ -18,13 +18,7 @@ export class UserService {
   constructor(private firestore: AngularFirestore) { }
 
   getUserInfo(id) {
-    return new Observable(observer => {
-      this.firestore.collection('users').doc(id).valueChanges()
-        .subscribe(user => {
-          this._userInfo = new User(user);
-          observer.next()
-        });
-    }) 
+    return this.firestore.collection('users').doc(id).valueChanges();
   }
 
   saveUser(user) {

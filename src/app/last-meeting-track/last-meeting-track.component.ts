@@ -16,10 +16,10 @@ export class LastMeetingTrackComponent implements OnInit {
     if(meets.length && (this.meeting = this.getLastMeetingClosed(meets))) {
       this.isLoading = true;
       this.meetingSubscription = this.meetingService.getMeeting(this.meeting.id)
-        .subscribe(meeting => this.ngZone.run(() => {
+        .subscribe(meeting => {
           this.meeting = meeting;
           this.isLoading = false;
-        }));
+        });
     }
   };
   

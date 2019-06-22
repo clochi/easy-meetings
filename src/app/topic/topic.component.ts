@@ -23,4 +23,8 @@ export class TopicComponent implements OnInit {
     this.showTasks = !this.showTasks;
   }
 
+  trackByTask(index, task) {
+    return task.id;
+  }
+
 }

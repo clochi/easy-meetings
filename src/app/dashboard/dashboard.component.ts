@@ -35,7 +35,7 @@ export class DashboardComponent implements OnInit {
     }));
   }
 
-  onDesetroy() {
+  ngOnDestroy() {
     this.meetingSubscription && this.meetingSubscription.unsubscribe();
   }
 

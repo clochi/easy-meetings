@@ -10,15 +10,11 @@ export class HasActiveGroup implements CanActivate {
   route: import("@angular/router").ActivatedRouteSnapshot;
 
   constructor(
-    private loginService: LoginService,
     private router: Router,
     private userService: UserService) {}
   
   canActivate() {
-    if(!this.userService.userInfo) {
-      this.router.navigate(['/']);
-      return false;
-    }
+
     if(this.userService.userInfo.activeGroup){
       return true;
     }
