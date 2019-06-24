@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { User } from '../classes/user.class';
 import { TaskStatus } from '../constants';
 import { MeetingService } from '../services/meeting.service';
+import { Group } from '../classes/group.class';
 
 @Component({
   selector: 'em-open-meeting',
@@ -28,11 +29,8 @@ export class OpenMeetingComponent implements OnInit {
 
   ngOnInit() {
     this.userListSubscription = this.groupService.getActiveGroup()
-      .subscribe(data => {
-        (<Array<{}>>data.payload.data()['users'])
-          .forEach(user => {
-            this.userList.push(new User(user))
-          })
+      .subscribe(group => {
+        this.userList = group.users;
       })
     this.taskForm = new FormGroup({})
     this.meeting.topics.forEach(topic => {
