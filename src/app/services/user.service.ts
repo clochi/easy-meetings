@@ -24,10 +24,13 @@ export class UserService {
     return this.users.doc(id).valueChanges();
   }
 
-  getUserByTyping(text) {
+  getUserByTyping(text): Observable<User> {
     return (this.users.valueChanges())
-      .pipe(map(user => user.find(user => (<User>user).email.match(text))
-      ))
+      .pipe(
+        map(user => user.find(user => !!(<User>user).email.match(text))),
+        map(user => user && new User(user))
+        )
+        
   }
 
   saveUser(user) {

@@ -13,27 +13,28 @@
       required>
   </mat-form-field>
   <mat-form-field>
-    <mat-chip-list #userList aria-label="Fruit selection">
+    <mat-chip-list #userList aria-label="Selección de usuario">
       <mat-chip
         *ngFor="let fruit of fruits"
         [selectable]="selectable"
         [removable]="removable"
         (removed)="remove(fruit)">
         {{fruit}}
-        <!-- <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
         placeholder="New fruit..."
         [formControl]="userControl"
         [matAutocomplete]="auto"
-        [matChipInputFor]="userList"
+        >
+        <!-- [matChipInputFor]="userList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [matChipInputAddOnBlur]="addOnBlur"
-        (matChipInputTokenEnd)="add($event)">
+        (matChipInputTokenEnd)="add($event)" -->
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-        {{fruit}}
+      <mat-option *ngFor="let user of suggestedUser" [value]="user">
+        {{user.name}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
