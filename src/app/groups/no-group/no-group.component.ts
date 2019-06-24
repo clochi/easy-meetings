@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'em-no-group',
@@ -7,9 +9,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NoGroupComponent implements OnInit {
 
-  constructor() { }
+  userControl = new FormControl();
+  constructor(
+    private userService: UserService
+  ) {  }
 
   ngOnInit() {
+    this.userControl.valueChanges
+      .subscribe(input => {
+        if(input.match('@')) {
+          this.userService.getUserByTyping(input)
+            .subscribe(data => {
+              debugger
+              console.log(data)
+            })
+        }
+      })
+  }
+
+  createGroup(form) {
+    console.log(form.value)
   }
 
 }

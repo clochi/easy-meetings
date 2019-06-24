@@ -1,3 +1,38 @@
 <p>
-  no-group works!
+  Todavía no tienes un grupo, espera la invitación de alguien o bien puedes empezar y crear tu propio grupo.
 </p>
+
+<form novalidate (ngSubmit)="createGroup(formCreateGroup)" #formCreateGroup="ngForm">
+  <mat-form-field>
+    <input 
+      type="text"
+      matInput
+      name="name"
+      ngModel
+      placeholder="Nombre del grupo"
+      required>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-chip-list #userList aria-label="Fruit selection">
+      <mat-chip
+        *ngFor="let fruit of fruits"
+        [selectable]="selectable"
+        [removable]="removable"
+        (removed)="remove(fruit)">
+        {{fruit}}
+        <!-- <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon> -->
+      </mat-chip>
+      <input
+        placeholder="New fruit..."
+        [formControl]="userControl"
+        >
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
+        {{fruit}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button mat-raised-button color="primary">Nuevo grupo</button>
+</form>
+
