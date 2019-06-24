@@ -25,7 +25,11 @@
       <input
         placeholder="New fruit..."
         [formControl]="userControl"
-        >
+        [matAutocomplete]="auto"
+        [matChipInputFor]="userList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)">
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
