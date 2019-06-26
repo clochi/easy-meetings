@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { User } from '../classes/user.class';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Group } from '../classes/group.class';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,11 @@ export class UserService {
       .update(data)
   }
 
-  insertGroupInUsers(groupId: string, users: User[]) {
+  insertGroupInUsers(groupObject: Group, userList: User[]) {
+    const {owner, users, ...group } = groupObject;
     const userBatch = this.firestore.firestore.batch();
-    users.forEach(user => {
-      const groups = [...user.groups, groupId]
+    userList.forEach(user => {
+      const groups = [...user.groups, group]
       const userRef = this.users.doc(user.id).ref;
       userBatch.update(userRef, {groups: groups})
     })
@@ -49,8 +51,13 @@ export class UserService {
         )),
         map(user => user && new User(user))
         )
-        
   }
+
+  getUserGroups() {
+    return this.users
+      .doc(this.userInfo.id)
+        .valueChanges()
+  } 
 
   saveUser(user) {
     this._userInfo = new User(user);

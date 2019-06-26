@@ -64,19 +64,20 @@ export class NoGroupComponent implements OnInit {
     } as Group;
     this.groupService.createGroup(group)
       .then(() => {
-        const userId = this.userService.userInfo.id;
+        const user = this.userService.userInfo;
         this.userService
-          .updateUserInfo(userId, {activeGroup: group.id})
+          .updateUserInfo(user.id, {activeGroup: group.id})
             .then(() => {
+              this.userList.push(user);
               const userList = this.userList.map(user => {
                 const {activeGroup, ...userData} = user;
                 return userData;
               }) as User[];
               this.userService
-                .insertGroupInUsers(group.id, userList)
+                .insertGroupInUsers(group, userList)
                   .then(() => {
-                    alert('Se creó el grupo correctamente');
                     this.router.navigate(['/app']);
+                    alert('Se creó el grupo correctamente');
                   })
                   .catch(() => alert('Hubo un error al insertar el nuevo grupo en los usuarios'))
             })
