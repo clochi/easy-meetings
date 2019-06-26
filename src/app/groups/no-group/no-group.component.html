@@ -2,40 +2,4 @@
   Todavía no tienes un grupo, espera la invitación de alguien o bien puedes empezar y crear tu propio grupo.
 </p>
 
-<form novalidate (ngSubmit)="createGroup(formCreateGroup)" #formCreateGroup="ngForm">
-  <mat-form-field>
-    <input 
-      type="text"
-      matInput
-      name="name"
-      ngModel
-      placeholder="Nombre del grupo"
-      required>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-chip-list #userList aria-label="Selección de usuario">
-      <mat-chip
-        *ngFor="let name of userNames"
-        [removable]="removable"
-        (removed)="remove(name)">
-        {{name}}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-      <input
-        #userInput
-        placeholder="Invitar usuario"
-        [formControl]="userControl"
-        [matAutocomplete]="auto"
-        [matChipInputFor]="userList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        >
-    </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let user of suggestedUser" [value]="user">
-        {{user.name}}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-  <button mat-raised-button color="primary" [disabled]="!formCreateGroup.valid || !userNames.length || isSending">Nuevo grupo</button>
-</form>
-
+<em-new-group-form></em-new-group-form>
