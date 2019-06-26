@@ -24,10 +24,29 @@ export class UserService {
     return this.users.doc(id).valueChanges();
   }
 
+  updateUserInfo(id, data) {
+    return this.users.doc(id).ref
+      .update(data)
+  }
+
+  insertGroupInUsers(groupId: string, users: User[]) {
+    const userBatch = this.firestore.firestore.batch();
+    users.forEach(user => {
+      const groups = [...user.groups, groupId]
+      const userRef = this.users.doc(user.id).ref;
+      userBatch.update(userRef, {groups: groups})
+    })
+    return userBatch.commit();
+  }
+
   getUserByTyping(text): Observable<User> {
     return (this.users.valueChanges())
       .pipe(
-        map(user => user.find(user => !!(<User>user).email.match(text))),
+        map(user => user.find(user => {
+          return !!text.match(/\w+@/)
+            && !!(<User>user).email.match(text) && (<User>user).email !== this.userInfo.email
+        }
+        )),
         map(user => user && new User(user))
         )
         

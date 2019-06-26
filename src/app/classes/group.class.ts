@@ -3,6 +3,7 @@ import { User } from './user.class';
 export class Group {
   id: string;
   name: string;
+  owner: User;
   users: User[];
   
   constructor(group: Group) {
@@ -10,6 +11,6 @@ export class Group {
   }
 
   toPlain() {
-    JSON.parse(JSON.stringify(this));
+    return JSON.parse(JSON.stringify(this));
   }
 }

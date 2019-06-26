@@ -15,22 +15,20 @@
   <mat-form-field>
     <mat-chip-list #userList aria-label="Selección de usuario">
       <mat-chip
-        *ngFor="let fruit of fruits"
-        [selectable]="selectable"
+        *ngFor="let name of userNames"
         [removable]="removable"
-        (removed)="remove(fruit)">
-        {{fruit}}
+        (removed)="remove(name)">
+        {{name}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
       <input
-        placeholder="New fruit..."
+        #userInput
+        placeholder="Invitar usuario"
         [formControl]="userControl"
         [matAutocomplete]="auto"
-        >
-        <!-- [matChipInputFor]="userList"
+        [matChipInputFor]="userList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        [matChipInputAddOnBlur]="addOnBlur"
-        (matChipInputTokenEnd)="add($event)" -->
+        >
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
       <mat-option *ngFor="let user of suggestedUser" [value]="user">
@@ -38,6 +36,6 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-  <button mat-raised-button color="primary">Nuevo grupo</button>
+  <button mat-raised-button color="primary" [disabled]="!formCreateGroup.valid || !userNames.length || isSending">Nuevo grupo</button>
 </form>
 
