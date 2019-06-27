@@ -41,15 +41,15 @@ export class UserService {
     return userBatch.commit();
   }
 
-  getUserByTyping(text): Observable<User> {
+  getUserByTyping(text): Observable<User[]> {
     return (this.users.valueChanges())
       .pipe(
-        map(user => user.find(user => {
-          return !!text.match(/\w+@/)
-            && !!(<User>user).email.match(text) && (<User>user).email !== this.userInfo.email
-        }
-        )),
-        map(user => user && new User(user))
+        map(user => user.filter(user => {
+          const textPattern = new RegExp(text, 'i');
+            return !!(<User>user).name.match(textPattern) && (<User>user).name !== this.userInfo.name;
+        })
+          .map(user => new User(user))
+        )
         )
   }
 

@@ -8,6 +8,7 @@ import { Subject, Subscription } from 'rxjs';
 import { GroupService } from 'src/app/services/group.service';
 import { Group } from 'src/app/classes/group.class';
 import { Router } from '@angular/router';
+import { debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'em-new-group-form',
@@ -35,13 +36,14 @@ export class NewGroupFormComponent implements OnInit {
 
   ngOnInit() {
     this.userControlSubscription = this.userControl.valueChanges
+      .pipe(
+        tap(() => this.suggestedUser = []),
+        debounceTime(800))
       .subscribe(input => {
-        if(typeof input === 'string' && input.match('@')) {
-          this.suggestedUser = [];
-          this.userService.getUserByTyping(input)
+        if(typeof input === 'string' && input.length > 2) {
+          this.userServiceSubscription = this.userService.getUserByTyping(input)
             .subscribe(data => {
-              const userExist = this.userList.find(user => data && user.email === data.email);
-              data && !userExist && this.suggestedUser.push(data);
+              this.suggestedUser = data.filter(dataUser => !this.userList.find(user => dataUser.name == user.name))
             })
         } else {
           this.suggestedUser = [];
@@ -106,7 +108,7 @@ export class NewGroupFormComponent implements OnInit {
 
   ngOnDestroy() {
     this.userControlSubscription.unsubscribe();
-    this.userServiceSubscription.unsubscribe();
+    this.userServiceSubscription && this.userServiceSubscription.unsubscribe();
     this.isSending = false; 
   }
 
