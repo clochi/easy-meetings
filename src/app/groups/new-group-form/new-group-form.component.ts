@@ -1,14 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import { FormControl } from '@angular/forms';
-import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/classes/user.class';
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
-import { Subject, Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { GroupService } from 'src/app/services/group.service';
 import { Group } from 'src/app/classes/group.class';
 import { Router } from '@angular/router';
-import { debounceTime, tap } from 'rxjs/operators';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/classes/user.class';
 
 @Component({
   selector: 'em-new-group-form',
@@ -16,18 +11,10 @@ import { debounceTime, tap } from 'rxjs/operators';
   styleUrls: ['./new-group-form.component.less']
 })
 export class NewGroupFormComponent implements OnInit {
-  @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  
   isSending = false;
-  suggestedUser: User[] = [];
-  userControl = new FormControl();
-  userList: User[] = [];
-  usersSubject: Subject<User[]> = new Subject();
-  userNames: string[] = [];
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  removable = true;
-  userControlSubscription: Subscription;
-  userServiceSubscription: Subscription;
+  userList : User[] = [];
+
   constructor(
     private userService: UserService,
     private groupService: GroupService,
@@ -35,25 +22,7 @@ export class NewGroupFormComponent implements OnInit {
   ) {  }
 
   ngOnInit() {
-    this.userControlSubscription = this.userControl.valueChanges
-      .pipe(
-        tap(() => this.suggestedUser = []),
-        debounceTime(800))
-      .subscribe(input => {
-        if(typeof input === 'string' && input.length > 2) {
-          this.userServiceSubscription = this.userService.getUserByTyping(input)
-            .subscribe(data => {
-              this.suggestedUser = data.filter(dataUser => !this.userList.find(user => dataUser.name == user.name))
-            })
-        } else {
-          this.suggestedUser = [];
-        }
-      })
-
-    this.usersSubject
-      .subscribe(users => {
-        this.userNames = users.map(user => user.name)
-      });
+    
   }
 
   createGroup(form) {
@@ -92,23 +61,11 @@ export class NewGroupFormComponent implements OnInit {
       })
   }
 
-  remove(userName: string): void {
-    const user = this.userList.find(user => user.name === userName);
-    this.userList.splice(this.userList.indexOf(user), 1);
-    this.usersSubject.next(this.userList);
-  }
-
-  selected(e: MatAutocompleteSelectedEvent) {
-    this.userList.push(e.option.value);
-    this.usersSubject.next(this.userList);
-    this.userInput.nativeElement.value = '';
-    this.userControl.setValue(null);
-    this.suggestedUser = [];
+  updateUserList(userList) {
+    this.userList = [...userList];
   }
 
   ngOnDestroy() {
-    this.userControlSubscription.unsubscribe();
-    this.userServiceSubscription && this.userServiceSubscription.unsubscribe();
     this.isSending = false; 
   }
 

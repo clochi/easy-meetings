@@ -1,0 +1,26 @@
+<div class="people-picker">
+  <mat-form-field>
+    <mat-chip-list #userList aria-label="Selección de usuario">
+      <mat-chip
+        *ngFor="let name of userNames"
+        [removable]="removable"
+        (removed)="remove(name)">
+        {{name}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input
+        #userInput
+        placeholder="Invitar usuario"
+        [formControl]="userControl"
+        [matAutocomplete]="auto"
+        [matChipInputFor]="userList"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        >
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let user of suggestedUser" [value]="user">
+        {{user.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

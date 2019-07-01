@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewGroupFormComponent } from './new-group-form/new-group-form.component';
 import { MyGroupsComponent } from './my-groups/my-groups.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [NoGroupComponent, NewGroupFormComponent, MyGroupsComponent],
@@ -14,7 +15,9 @@ import { MyGroupsComponent } from './my-groups/my-groups.component';
     FormsModule,
     ReactiveFormsModule,
     GroupsRoutingModule,
-    MaterialModule
+    MaterialModule,
+    SharedModule
   ]
 })
 export class GroupsModule { }
+
