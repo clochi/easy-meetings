@@ -6,7 +6,7 @@ import { MyGroupsComponent } from './my-groups/my-groups.component';
 const routes: Routes = [
   { path: '', component: MyGroupsComponent },
   { path: 'no-group', component: NoGroupComponent }
-]
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -27,7 +27,7 @@ export class UserService {
 
   updateUserInfo(id, data) {
     return this.users.doc(id).ref
-      .update(data)
+      .update(data);
   }
 
   insertGroupInUsers(groupObject: Group, userList: User[]) {
@@ -36,8 +36,8 @@ export class UserService {
     userList.forEach(user => {
       const groups = [...user.groups, group]
       const userRef = this.users.doc(user.id).ref;
-      userBatch.update(userRef, {groups: groups})
-    })
+      userBatch.update(userRef, {groups});
+    });
     return userBatch.commit();
   }
 
@@ -50,20 +50,20 @@ export class UserService {
         })
           .map(user => new User(user))
         )
-        )
+        );
   }
 
   getUserGroups() {
     return this.users
       .doc(this.userInfo.id)
-        .valueChanges()
-  } 
+        .valueChanges();
+  }
 
   saveUser(user) {
     this._userInfo = new User(user);
     return this.users
       .doc(user.id)
-        .set(user)
+        .set(user);
   }
 
 }

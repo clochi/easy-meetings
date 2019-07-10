@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { UserService } from './user.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Group } from '../classes/group.class';
 import { map } from 'rxjs/operators';
 import { User } from '../classes/user.class';
@@ -18,16 +18,23 @@ export class GroupService {
     private firestore: AngularFirestore,
     private userService: UserService) { }
 
-  getActiveGroup() :Observable<Group>{
+  getActiveGroup(): Observable<Group> {
+    const activeGroup = this.userService.userInfo.activeGroup;
+    if (!activeGroup) { return of(null); }
     return this.group
-      .doc(this.userService.userInfo.activeGroup)
+      .doc(activeGroup)
         .valueChanges()
           .pipe(map(group => new Group(group as Group)));
   }
 
+  getGroupByName(name) {
+    return this.firestore
+      .collection('groups', ref => ref.where('name', '==', name));
+  }
+
   createGroup(group: Group) {
     const groupId = this.firestore.createId();
-    const {activeGroup, groups, ...owner} = this.userService.userInfo
+    const {activeGroup, groups, ...owner} = this.userService.userInfo;
     group.id = groupId;
     group.owner = owner as User;
     group.users.push(owner as User);

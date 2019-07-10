@@ -6,9 +6,10 @@
         name="name"
         ngModel
         placeholder="Nombre del grupo"
-        required>
+        required
+        (blur)="verifyGroupName($event)">
     </mat-form-field>
     <em-people-picker 
-      (onUserListChanges)="updateUserList($event)"></em-people-picker>
+      (userListChanges)="updateUserList($event)"></em-people-picker>
     <button mat-raised-button color="primary" [disabled]="!formCreateGroup.valid || !userList.length || isSending">Nuevo grupo</button>
   </form>

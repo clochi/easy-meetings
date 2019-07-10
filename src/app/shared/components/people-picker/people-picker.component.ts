@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Output } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Output, Input } from '@angular/core';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import { FormControl } from '@angular/forms';
 import { UserService } from 'src/app/services/user.service';
@@ -15,8 +15,10 @@ import { tap, debounceTime } from 'rxjs/operators';
 export class PeoplePickerComponent implements OnInit {
   @ViewChild('userInput') userInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  @Output('onUserListChanges') usersSubject: Subject<User[]> = new Subject();
-  
+  @Output() userListChanges: Subject<User[]> = new Subject();
+  @Input() set userListData(userList) {
+    this.userList = [...userList];
+  }
   suggestedUser: User[] = [];
   userControl = new FormControl();
   userList: User[] = [];
@@ -34,33 +36,33 @@ export class PeoplePickerComponent implements OnInit {
     this.userControlSubscription = this.userControl.valueChanges
       .pipe(
         tap(() => this.suggestedUser = []),
-        debounceTime(800))
+        debounceTime(500))
       .subscribe(input => {
-        if(typeof input === 'string' && input.length > 2) {
+        if (typeof input === 'string' && input.length > 2) {
           this.userServiceSubscription = this.userService.getUserByTyping(input)
             .subscribe(data => {
-              this.suggestedUser = data.filter(dataUser => !this.userList.find(user => dataUser.name == user.name))
-            })
+              this.suggestedUser = data.filter(dataUser => !this.userList.find(user => dataUser.name === user.name));
+            });
         } else {
           this.suggestedUser = [];
         }
-      })
+      });
 
-    this.usersSubject
+    this.userListChanges
       .subscribe(users => {
-        this.userNames = users.map(user => user.name)
+        this.userNames = users.map(user => user.name);
       });
   }
 
   remove(userName: string): void {
     const user = this.userList.find(user => user.name === userName);
     this.userList.splice(this.userList.indexOf(user), 1);
-    this.usersSubject.next(this.userList);
+    this.userListChanges.next(this.userList);
   }
 
   selected(e: MatAutocompleteSelectedEvent) {
     this.userList.push(e.option.value);
-    this.usersSubject.next(this.userList);
+    this.userListChanges.next(this.userList);
     this.userInput.nativeElement.value = '';
     this.userControl.setValue(null);
     this.suggestedUser = [];
@@ -68,7 +70,7 @@ export class PeoplePickerComponent implements OnInit {
 
   ngOnDestroy() {
     this.userControlSubscription.unsubscribe();
-    this.userServiceSubscription && this.userServiceSubscription.unsubscribe();
+    if (this.userServiceSubscription) {this.userServiceSubscription.unsubscribe();}
   }
 
 }
