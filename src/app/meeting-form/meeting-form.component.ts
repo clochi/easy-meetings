@@ -64,6 +64,8 @@ export class MeetingFormComponent implements OnInit {
     this.isSending = true;
     this.clearEmptyTopic();
     this.extractFormData();
+    const plainDate = JSON.parse(JSON.stringify(this.meeting.date))
+    this.meeting.date = new Date(plainDate.slice(0,11) + this.meeting.time)
     this.meetingService.saveMeeting(this.meeting.toPlain())
       .then(meeting => {
         this.topicsControl.controls.forEach(control => {

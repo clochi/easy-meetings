@@ -1,0 +1,15 @@
+<form novalidate (ngSubmit)="createGroup(formCreateGroup)" #formCreateGroup="ngForm">
+    <mat-form-field>
+      <input 
+        type="text"
+        matInput
+        name="name"
+        ngModel
+        placeholder="Nombre del grupo"
+        required
+        (blur)="verifyGroupName($event)">
+    </mat-form-field>
+    <em-people-picker 
+      (userListChanges)="updateUserList($event)"></em-people-picker>
+    <button mat-raised-button color="primary" [disabled]="!formCreateGroup.valid || !userList.length || isSending">Nuevo grupo</button>
+  </form>

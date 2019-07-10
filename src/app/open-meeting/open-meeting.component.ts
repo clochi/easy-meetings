@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { User } from '../classes/user.class';
 import { TaskStatus } from '../constants';
 import { MeetingService } from '../services/meeting.service';
+import { Group } from '../classes/group.class';
 
 @Component({
   selector: 'em-open-meeting',
@@ -18,7 +19,7 @@ export class OpenMeetingComponent implements OnInit {
   @Input() meeting: Meeting;
   tasks: Task[] = [];
   taskForm: FormGroup;
-  userListSubscription: Subscription
+  userListSubscription: Subscription;
   userList: User[] = [];
   constructor(
     private taskService: TaskService,
@@ -28,13 +29,10 @@ export class OpenMeetingComponent implements OnInit {
 
   ngOnInit() {
     this.userListSubscription = this.groupService.getActiveGroup()
-      .subscribe(data => {
-        (<Array<{}>>data.payload.data()['users'])
-          .forEach(user => {
-            this.userList.push(new User(user))
-          })
-      })
-    this.taskForm = new FormGroup({})
+      .subscribe(group => {
+        this.userList = group.users;
+      });
+    this.taskForm = new FormGroup({});
     this.meeting.topics.forEach(topic => {
       this.taskForm.addControl(topic.id, new FormArray([]));
       this.addInput(topic.id);
@@ -43,11 +41,11 @@ export class OpenMeetingComponent implements OnInit {
   }
 
   getControl(topicId) {
-    return (<FormArray>this.taskForm.get(topicId));
+    return this.taskForm.get(topicId) as FormArray;
   }
 
   addInput(topicId) {
-    const topicTasks = (<FormArray>this.taskForm.get(topicId))
+    const topicTasks = this.taskForm.get(topicId) as FormArray;
     if (topicTasks.controls.length) {
       topicTasks
         .push(new FormGroup({
@@ -65,17 +63,17 @@ export class OpenMeetingComponent implements OnInit {
   }
 
   userSelected(index, topicId) {
-    if (this.getControl(topicId).controls[index + 1]) return;
-    this.addInput(topicId)
+    if (this.getControl(topicId).controls[index + 1]) { return; }
+    this.addInput(topicId);
     setTimeout(() => {
       document.querySelector(`.${CSS.escape(topicId)}`)
         .querySelector('.ng-pristine')
         .querySelector('input').focus();
-    })
+    });
   }
 
   removeTask(index, topicId) {
-    if (!this.getControl(topicId).controls[index + 1]) return;
+    if (!this.getControl(topicId).controls[index + 1]) { return; }
     this.getControl(topicId).removeAt(index);
   }
 
@@ -87,14 +85,14 @@ export class OpenMeetingComponent implements OnInit {
         this.meetingService.meetings.doc(this.meeting.id)
           .update({status: false})
             .then(() => alert('La reunión se guardó correctamente'));
-      })
+      });
   }
 
   extractFormData() {
     const form = this.taskForm.controls;
     Object.keys(form)
       .forEach(key => {
-        if(key !== 'nextMeeting') {
+        if (key !== 'nextMeeting') {
           form[key].value.forEach(taskData => {
             const task: Task = {
               assigned: taskData.user,
@@ -104,22 +102,21 @@ export class OpenMeetingComponent implements OnInit {
               meetingId: this.meeting.id,
               status: TaskStatus.pending,
             } as Task;
-            this.tasks.push(new Task(task))
-          })
+            this.tasks.push(new Task(task));
+          });
         }
-        
-      })
+      });
   }
 
   clearEmptyTopic() {
     const form = this.taskForm.controls;
     Object.keys(form)
       .forEach(key => {
-        if(key !== 'nextMeeting') {
+        if (key !== 'nextMeeting') {
           form[key].value
             .forEach((item, i, arr) => {
-              if(item.task == '') {
-                arr.splice(i, 1)
+              if (item.task === '') {
+                arr.splice(i, 1);
               }
           });
         }

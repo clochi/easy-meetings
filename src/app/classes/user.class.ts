@@ -9,4 +9,8 @@ export class User {
     Object.keys(o)
       .forEach(item => this[item] = o[item])
   }
+
+  toPlain() {
+    return JSON.parse(JSON.stringify(this));
+  }
 }
