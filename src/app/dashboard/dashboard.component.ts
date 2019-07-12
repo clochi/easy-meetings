@@ -4,7 +4,8 @@ import { MeetingFormComponent } from '../meeting-form/meeting-form.component';
 import { MeetingService } from '../services/meeting.service';
 import { Meeting } from '../classes/meeting.class';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators'
+import { map, take } from 'rxjs/operators'
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'em-dashboard',
@@ -15,7 +16,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private ngZone: NgZone,
-    private meetingService: MeetingService) {}
+    private meetingService: MeetingService,
+    private userService: UserService) {}
   title = 'easy-meetings';
   isLoading = false;
   meetings: Meeting[] = [];
@@ -23,9 +25,13 @@ export class DashboardComponent implements OnInit {
   meetingSubscription: Subscription;
 
   ngOnInit() {
-    this.meetingSubscription = this.meetingService.getAllMeetings()
-      .subscribe(meetings => {
-        this.meetings = meetings;
+    this.meetingSubscription = this.userService.getMyUserInfo()
+      .subscribe(() => {
+        this.meetingService.getAllMeetings()
+        .pipe(take(1))
+        .subscribe(meetings => {
+          this.meetings = meetings;
+        })
       })
   }
 

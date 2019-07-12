@@ -13,7 +13,7 @@ export class MyGroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.userService.getUserGroups()
+    this.userService.getMyUserInfo()
       .subscribe(data => {
         debugger
       })

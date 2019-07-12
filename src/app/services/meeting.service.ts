@@ -29,7 +29,7 @@ export class MeetingService {
     private taskService: TaskService,
     private trackService: TrackService
   ) { }
-  
+
   getAllMeetings(): Observable<Meeting[]> {
     return this.firestore
       .collection(this.meetings)

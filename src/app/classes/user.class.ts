@@ -1,13 +1,15 @@
+import { Group } from './group.class';
+
 export class User {
   activeGroup: string;
   email: string;
-  groups: string[];
+  groups: Group[];
   id: string;
   name: string;
 
-  constructor(o: Object) {
+  constructor(o: object) {
     Object.keys(o)
-      .forEach(item => this[item] = o[item])
+      .forEach(item => this[item] = o[item]);
   }
 
   toPlain() {

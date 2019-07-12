@@ -7,9 +7,10 @@ import { MaterialModule } from '../material/material.module';
 import { MomentPipe } from './pipes/moment.pipe';
 import { PeoplePickerComponent } from './components/people-picker/people-picker.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { GroupListComponent } from './components/group-list/group-list.component';
 
 @NgModule({
-  declarations: [SpinnerComponent, GoBackComponent, MomentPipe, PeoplePickerComponent],
+  declarations: [SpinnerComponent, GoBackComponent, MomentPipe, PeoplePickerComponent, GroupListComponent],
   imports: [
     CommonModule,
     MatProgressSpinnerModule,
@@ -21,7 +22,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     GoBackComponent,
     MaterialModule,
     MomentPipe,
-    PeoplePickerComponent
+    PeoplePickerComponent,
+    GroupListComponent
   ]
 })
 export class SharedModule { }

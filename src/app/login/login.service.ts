@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subscription } from 'rxjs';
 import { UserService } from '../services/user.service';
-import { User } from '../classes/user.class';
-import { take } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -16,7 +13,7 @@ export class LoginService {
     return new Promise((resolve, reject) => {
       this.authFire.auth.signInWithEmailAndPassword(login.user, login.password)
         .then((value) => {
-          this.initializeUser()
+          this.userService.syncUser()
             .then(() => {
               resolve();
             })
@@ -36,25 +33,6 @@ export class LoginService {
         delete login.password;
         return this.userService.saveUser(login);
       })
-  }
-
-  initializeUser(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      this.authFire.authState
-        .pipe(take(1))
-          .subscribe(user => {
-            if(user) {
-              this.userService.getUserInfo(user.uid)
-                .pipe(take(1))
-                .subscribe(userData => {
-                  this.userService.userInfo = new User(userData);
-                  resolve();
-                })
-            } else {
-              resolve();
-            }
-          })
-    })
   }
 
   isLogged(): boolean {

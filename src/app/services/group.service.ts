@@ -38,7 +38,7 @@ export class GroupService {
     group.id = groupId;
     group.owner = owner as User;
     group.users.push(owner as User);
-    return this.group.doc(groupId).set(group)
+    return this.group.doc(groupId).set(group);
   }
 
 }

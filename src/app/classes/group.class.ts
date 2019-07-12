@@ -5,7 +5,7 @@ export class Group {
   name: string;
   owner: User;
   users: User[];
-  
+
   constructor(group: Group) {
     Object.assign(this, group);
   }

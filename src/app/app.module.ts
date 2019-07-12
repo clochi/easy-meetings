@@ -28,8 +28,8 @@ import { ClosedMeetingComponent } from './closed-meeting/closed-meeting.componen
 import { TrackComponent } from './track/track.component';
 import { HasActiveGroup } from './guards/has-group';
 import { initializeApp } from 'firebase';
-import { LoginService } from './login/login.service';
 import { RedirectLoggedDashboard } from './guards/redirect-logged-dashboard';
+import { UserService } from './services/user.service';
 
 registerLocaleData(localArg);
 @NgModule({
@@ -68,7 +68,7 @@ registerLocaleData(localArg);
     {
       provide: APP_INITIALIZER,
       useFactory: initialize,
-      deps: [ LoginService ],
+      deps: [ UserService ],
       multi: true
     },
     {provide: LOCALE_ID, useValue: 'es-AR'},
@@ -79,6 +79,6 @@ registerLocaleData(localArg);
 })
 export class AppModule { }
 
-export function initialize(loginService: LoginService) {
-  return () => loginService.initializeUser();
+export function initialize(userService: UserService) {
+  return () => userService.syncUser();
 }

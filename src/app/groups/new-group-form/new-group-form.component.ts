@@ -22,8 +22,7 @@ export class NewGroupFormComponent implements OnInit {
   constructor(
     private userService: UserService,
     private groupService: GroupService,
-    private router: Router,
-    private ngZone: NgZone
+    private router: Router
   ) {  }
 
   ngOnInit() {
@@ -63,10 +62,12 @@ export class NewGroupFormComponent implements OnInit {
               this.userService
                 .insertGroupInUsers(group, userList)
                   .then(() => {
-                    this.ngZone.run(() => {
+                    if (!user.activeGroup) {
+                      this.userService.syncUser()
+                        .then(() => this.router.navigate(['/app']));
+                    } else {
                       this.router.navigate(['/app']);
-                      alert('Se creó el grupo correctamente');
-                    });
+                    }
                   })
                   .catch(() => alert('Hubo un error al insertar el nuevo grupo en los usuarios'));
             })

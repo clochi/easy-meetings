@@ -1,0 +1,13 @@
+<span class="group-list">
+  <mat-menu #groupMenu="matMenu">
+    <button mat-menu-item (click)="switchGroup(group)" *ngFor="let group of groups">
+      {{group.name}}
+    </button>
+    <button mat-menu-item>Crear grupo</button>
+  </mat-menu>
+  
+  <button mat-icon-button [matMenuTriggerFor]="groupMenu">
+    <mat-icon>group</mat-icon>
+  </button>
+</span>
+<em-spinner fullScreen [isLoading]="isLoading"></em-spinner>
