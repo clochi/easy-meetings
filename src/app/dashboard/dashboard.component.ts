@@ -28,11 +28,10 @@ export class DashboardComponent implements OnInit {
     this.meetingSubscription = this.userService.getMyUserInfo()
       .subscribe(() => {
         this.meetingService.getAllMeetings()
-        .pipe(take(1))
         .subscribe(meetings => {
           this.meetings = meetings;
-        })
-      })
+        });
+      });
   }
 
   createMeeting() {

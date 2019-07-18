@@ -32,4 +32,8 @@ export class GroupListComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.userServiceSubscription.unsubscribe();
+  }
+
 }

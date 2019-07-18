@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MeetingService } from '../services/meeting.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { Meeting } from '../classes/meeting.class';
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 
@@ -11,31 +9,28 @@ import * as moment from 'moment';
   styleUrls: ['./next-meetings.component.less']
 })
 export class NextMeetingsComponent implements OnInit {
-
-  meetings: Meeting[] = [];
-  nextMeetingSubscription: Subscription;
+  @Input() set meetings(meetingsData: Meeting[]) {
+    if (!meetingsData.length) {
+      this.meetingList = [];
+    }
+    this.meetingList = meetingsData
+      .filter(meeting => meeting.status)
+        .sort((prev, current) => prev.date.getTime() - current.date.getTime())
+          .slice(0, 10);
+    this.isLoading = false;
+  }
+  meetingList: Meeting[];
   isLoading = false;
   constructor(
-    private meetingService: MeetingService,
     private router: Router
   ) { }
 
   ngOnInit() {
     this.isLoading = true;
-    this.nextMeetingSubscription = this.meetingService.getNextMeetings()
-      .subscribe(meetings => {
-        this.meetings = meetings.map(meeting => new Meeting(meeting));
-          //.filter(meeting => moment(meeting.date).isSameOrAfter(moment()))
-        this.isLoading = false;
-      })
-  }
-  
-  goMeeting(meetingId) {
-    this.router.navigate([`app/meetings/${meetingId}`])
   }
 
-  ngOnDestroy() {
-    this.nextMeetingSubscription && this.nextMeetingSubscription.unsubscribe();
+  goMeeting(meetingId) {
+    this.router.navigate([`app/meetings/${meetingId}`])
   }
 
 }

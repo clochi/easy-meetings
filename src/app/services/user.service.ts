@@ -41,7 +41,7 @@ export class UserService {
           .subscribe(user => {
             if(user) {
               this.getUserInfo(user.uid)
-                //.pipe(take(1))
+                .pipe(take(1))
                 .subscribe(userData => {
                   this.userInfo = new User(userData);
                   resolve();

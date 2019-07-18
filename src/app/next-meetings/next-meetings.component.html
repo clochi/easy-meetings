@@ -1,7 +1,7 @@
 <div class="next-meetings">
   <em-spinner [isLoading]="isLoading"></em-spinner>
-  <p *ngIf="!meetings.length && !isLoading">No hay proximas reuniónes</p>
-  <div *ngFor="let meeting of meetings">
+  <p *ngIf="!meetingList?.length && !isLoading">No hay proximas reuniónes</p>
+  <div *ngFor="let meeting of meetingList">
     <em-meeting-item (click)="goMeeting(meeting.id)" [meeting]="meeting">
     </em-meeting-item>
   </div>
